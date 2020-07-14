@@ -1,0 +1,14 @@
+0000000000000000000000000000000000000000 948174810f7385eeb20ab1317a35e46d48d9f513 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1592939795 +0100	commit (initial): Basic rendering pipeline setup
+948174810f7385eeb20ab1317a35e46d48d9f513 d034939250748bc15ad721ed13f89f6899c906c9 BuildTools <unconfigured@null.spigotmc.org> 1593106712 +0100	commit: entity component system setup
+d034939250748bc15ad721ed13f89f6899c906c9 e16b83c16fb1b8bfd01b01822124665563055c7a BuildTools <unconfigured@null.spigotmc.org> 1593106820 +0100	commit: Small adjustments
+e16b83c16fb1b8bfd01b01822124665563055c7a d54fd1475825ff47f83156992679c55eaa681f95 BuildTools <unconfigured@null.spigotmc.org> 1593106950 +0100	pull: Merge made by the 'recursive' strategy.
+d54fd1475825ff47f83156992679c55eaa681f95 dc7dc855540f43afe4275ba7e34314ec659d08fd Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593181457 +0100	commit: Cleaning up unecessary files
+dc7dc855540f43afe4275ba7e34314ec659d08fd ef2960b9b1481ba549966c2d9a1f54d0c2f18439 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593181622 +0100	commit: remove original entity place holder and move entityComponentSystem into corresponding packages
+ef2960b9b1481ba549966c2d9a1f54d0c2f18439 621ae242c25c57a54269dee305460165adc34a20 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593181863 +0100	commit: java docs and small adjustments
+621ae242c25c57a54269dee305460165adc34a20 685347fa4fdf37443f7f9db3faab5271fd78265c Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593182018 +0100	pull: Merge made by the 'recursive' strategy.
+685347fa4fdf37443f7f9db3faab5271fd78265c 641b9411402d3eae11e38e67b60640322a8a081b Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593182167 +0100	commit: adjustments to main to test collision detection
+641b9411402d3eae11e38e67b60640322a8a081b 040609301ef665f1618f0aeab83f599d9dfbec9a Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593520421 +0100	commit: moved rendering into system package, made mesh and material components.
+040609301ef665f1618f0aeab83f599d9dfbec9a fd1387005d739f782e2c0e5a5a87916cd39b4be6 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593520517 +0100	commit: moved to ecs
+fd1387005d739f782e2c0e5a5a87916cd39b4be6 3ba7b30d2bed078f4682c8f9b44f51e09a032477 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593520578 +0100	commit: adjusted scene init using new systems
+3ba7b30d2bed078f4682c8f9b44f51e09a032477 6887583c97f616095582999d5f22e391d033adb0 Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1593520648 +0100	commit: added option to store data without textureCoords
+6887583c97f616095582999d5f22e391d033adb0 dd0523d24c8fb33a4843ae0f1951687529bddcea Dominic Cogan-Tucker <dxc653@student.bham.ac.uk> 1594068905 +0100	commit: small adjustments
