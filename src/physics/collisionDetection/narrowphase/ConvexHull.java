@@ -7,8 +7,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ecs.component.Mesh;
-import ecs.component.Scale;
 import ecs.component.State;
+import ecs.component.Weight;
 import ecs.entity.Entity;
 import utils.MatrixUtils;
 
@@ -74,7 +74,7 @@ public class ConvexHull
 		
 		Vector4f v4 = new Vector4f(start.toVector3f(), 1)
 				.mul(MatrixUtils.transformMatrix(state.position, 
-						state.rotation, ((Scale) entity.getComponent(Scale.class)).scale));
+						state.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
 		return new Vector3f(v4.x, v4.y, v4.z);
 	}
 	
