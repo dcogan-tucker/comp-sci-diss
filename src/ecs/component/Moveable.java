@@ -3,7 +3,7 @@ package ecs.component;
 import org.joml.Vector3f;
 
 /**
- * Component that holds an entity's velocity and acceleration.
+ * Component that holds an entity's momentum and velocity
  * 
  * @author Dominic Cogan-Tucker
  *
@@ -11,12 +11,17 @@ import org.joml.Vector3f;
 public class Moveable extends Component
 {
 	/**
+	 * The force being applied to the entity.
+	 */
+	public Vector3f force;
+	
+	/**
+	 * The momentum of the entity.
+	 */
+	public Vector3f momentum;
+	
+	/**
 	 * The velocity of the entity.
 	 */
 	public Vector3f velocity;
-	
-	/**
-	 * The acceleration of the entity.
-	 */
-	public Vector3f acceleration;
 }

@@ -9,6 +9,7 @@ import ecs.component.Moveable;
 import ecs.component.State;
 import ecs.entity.Camera;
 import ecs.entity.Entity;
+import physics.integrator.EulerIntegrator;
 
 /**
  * The system that moves entities in the scene.
@@ -19,7 +20,6 @@ import ecs.entity.Entity;
 public final class EntitySystem extends EngineSystem
 {
 	private static float dt = 1.0f / 144;
-	private static float scale = 5;
 	
 	/**
 	 * Private constructor to ensure class isn't unnecessarily
@@ -49,15 +49,7 @@ public final class EntitySystem extends EngineSystem
 		{
 			if (e.hasComponent(State.class) && !(e instanceof Camera))
 			{
-				Moveable m = ((Moveable) e.getComponent(Moveable.class));
-				State s = ((State) e.getComponent(State.class));
-				Vector3f a = new Vector3f(m.acceleration);
-				Vector3f v = new Vector3f(m.velocity)
-						.add(a.mul(dt));
-				Vector3f p = new Vector3f(s.position)
-						.add(v.mul(dt).mul(scale));
-				m.velocity.set(v);
-				s.position.set(p);
+				EulerIntegrator.integrate(e, dt);
 			}
 		});
 	}

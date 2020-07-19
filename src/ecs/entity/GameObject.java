@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Scale;
 import ecs.component.State;
+import ecs.component.Weight;
 
 /**
  * An an entity with a model component giving it a mesh and texture. Also has a
@@ -25,7 +25,7 @@ public class GameObject extends Entity
 	 * @param rot The rotation of the entity in the scene.
 	 * @param scale The scale of the entity in the scene.
 	 */
-	public GameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale)
+	public GameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float mass)
 	{
 		super();		
 		addComponent(mesh);
@@ -35,9 +35,11 @@ public class GameObject extends Entity
 		state.position = pos;
 		state.rotation = rot;
 		addComponent(state);
-
-		Scale scaleComp = new Scale();
-		scaleComp.scale = scale;
-		addComponent(scaleComp);
+		
+		Weight weight = new Weight();
+		weight.mass = mass;
+		weight.inverseMass = 1f / mass;
+		weight.scale = scale;
+		addComponent(weight);
 	}
 }

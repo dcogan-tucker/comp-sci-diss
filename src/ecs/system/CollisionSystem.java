@@ -12,6 +12,7 @@ import physics.collisionDetection.broadphase.BroadPhaseDetector;
 import physics.collisionDetection.collisionData.CollisionResolver;
 import physics.collisionDetection.narrowphase.NarrowPhaseDetector;
 import physics.collisionDetection.narrowphase.Simplex;
+import physics.integrator.ImpulseCalculator;
 
 /**
  * Class that holds collision detection method.
@@ -64,18 +65,11 @@ public final class CollisionSystem extends EngineSystem
 				{
 					narrowPhaseCollisions.put(collidingPair, NarrowPhaseDetector.getSimplex());
 				}
-				
 			});
 		
 		narrowPhaseCollisions.forEach((collidingPair, simplex)-> 
 			{
-				CollisionResolver cr = new CollisionResolver(simplex);
-				cr.generateCollisionData();
-				System.out.println(collidingPair[0].getClass().getSimpleName() 
-						+ " colliding with " + collidingPair[1].getClass().getSimpleName()
-						+ " WorldPoint: " + cr.getContactData().worldPoint 
-						+ ", WorldNormal: " + cr.getContactData().worldNormal
-						+ ", PenDepth: " + cr.getContactData().penDepth);
+				System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
 			});
 		
 		broadPhaseCollisions.clear();

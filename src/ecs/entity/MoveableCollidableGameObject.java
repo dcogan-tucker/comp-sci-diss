@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 import ecs.component.Material;
 import ecs.component.Mesh;
 import ecs.component.Moveable;
+import physics.integrator.ImpulseCalculator;
 
 /**
  * A CollidableGameObject with a moveable component that gives the entity a
@@ -25,12 +26,12 @@ public class MoveableCollidableGameObject extends CollidableGameObject
 	 * @param rot The rotation of the entity.
 	 * @param scale The scale of the entity.
 	 */
-	public MoveableCollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale)
+	public MoveableCollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float mass)
 	{
-		super(mesh, material, pos, rot, scale);
+		super(mesh, material, pos, rot, scale, mass);
 		Moveable moveableComponent = new Moveable();
-		moveableComponent.velocity = new Vector3f();
-		moveableComponent.acceleration = new Vector3f(0, -9.81f, 0);
+		moveableComponent.force = new Vector3f(0, 
+				-(ImpulseCalculator.G * ImpulseCalculator.M * mass) / (ImpulseCalculator.R * ImpulseCalculator.R), 0);
 		addComponent(moveableComponent);
 	}
 

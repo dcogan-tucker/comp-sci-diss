@@ -9,9 +9,9 @@ import java.util.Map;
 
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Scale;
 import ecs.component.State;
 import ecs.component.View;
+import ecs.component.Weight;
 import ecs.entity.Camera;
 import ecs.entity.Entity;
 import openGLObjects.Vao;
@@ -120,7 +120,7 @@ public final class RenderSystem extends EngineSystem
 	{
 		State entityState = ((State) entity.getComponent(State.class));
 		shader.setModelMatrix(MatrixUtils.transformMatrix(entityState.position, 
-				entityState.rotation, ((Scale) entity.getComponent(Scale.class)).scale));
+				entityState.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
 		shader.setViewMatrix(MatrixUtils.viewMatrix(cameraState.position, cameraState.rotation));
 		shader.setProjectionMatrix(((View) camera.getComponent(View.class)).window.getProjectionMatrix());
 		glDrawElements(GL_TRIANGLES, mesh.indices.length, GL_UNSIGNED_INT, 0);

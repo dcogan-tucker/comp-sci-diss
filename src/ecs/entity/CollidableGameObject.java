@@ -28,9 +28,9 @@ public class CollidableGameObject extends GameObject
 	 * @param rot The rotation of the entity in the scene.
 	 * @param scale The scale of the entity in the scene.
 	 */
-	public CollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale)
+	public CollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float weight)
 	{
-		super(mesh, material, pos, rot, scale);
+		super(mesh, material, pos, rot, scale, weight);
 		Collidable collidable = new Collidable();
 		addComponent(collidable);
 		float[] values = ((Mesh) getComponent(Mesh.class)).vertices;

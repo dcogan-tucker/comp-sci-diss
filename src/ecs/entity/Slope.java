@@ -66,9 +66,9 @@ public class Slope extends CollidableGameObject
 	 * @param rot The rotation of the slope in the scene.
 	 * @param scale The scale of the slope in the scene.
 	 */
-	private Slope(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale)
+	private Slope(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float weight)
 	{
-		super(mesh, material, pos, rot, scale);
+		super(mesh, material, pos, rot, scale, weight);
 	}
 
 	/**
@@ -79,12 +79,12 @@ public class Slope extends CollidableGameObject
 	 * @param scale The scale of the slope.
 	 * @return A slope with the given parameters.
 	 */
-	public static Slope create(Vector3f pos, Vector3f rot, Vector3f scale)
+	public static Slope create(Vector3f pos, Vector3f rot, Vector3f scale, float weight)
 	{
 		mesh.vertices = vertexPositions;
 		mesh.indices = indicies;
 		mesh.textures = textureCoords;
 		material.texturePath = "src/resources/borderSquareAtlas.png";
-		return new Slope(mesh, material, pos, rot, scale);
+		return new Slope(mesh, material, pos, rot, scale, weight);
 	}
 }

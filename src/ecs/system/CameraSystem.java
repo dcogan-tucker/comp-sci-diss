@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import org.joml.Vector3f;
 
 import ecs.component.Moveable;
+import ecs.component.Controllable;
 import ecs.component.State;
 import ecs.component.View;
 import ecs.entity.Camera;
@@ -19,7 +20,6 @@ import io.input.*;
  */
 public final class CameraSystem extends EngineSystem
 {
-	private static float moveSpeed = 0.05f;
 	private static float mouseSens = 0.1f;
 	private static double oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;
 
@@ -33,6 +33,7 @@ public final class CameraSystem extends EngineSystem
 	{
 		State state = ((State) camera.getComponent(State.class));
 		Moveable mov = ((Moveable) camera.getComponent(Moveable.class));
+		Controllable control = ((Controllable) camera.getComponent(Controllable.class));
 
 		float x = (float) Math.sin(Math.toRadians(-state.rotation.y));
 		float z = (float) Math.cos(Math.toRadians(state.rotation.y));
@@ -63,7 +64,12 @@ public final class CameraSystem extends EngineSystem
 			direction.add(new Vector3f(0, -1, 0));
 		}
 
-		mov.velocity = direction.mul(moveSpeed);
+		if (!direction.equals(new Vector3f()))
+		{
+			direction.normalize();
+		}
+
+		mov.velocity = direction.mul(control.speed);
 		state.position.add(mov.velocity);
 
 		newMouseX = Mouse.getX();
@@ -83,7 +89,5 @@ public final class CameraSystem extends EngineSystem
 		{
 			((View) camera.getComponent(View.class)).window.disableMouse(false);
 		}
-
-
 	}
 }

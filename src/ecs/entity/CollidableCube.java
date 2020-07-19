@@ -38,9 +38,9 @@ public class CollidableCube extends MoveableCollidableGameObject
 	 * @param scale The scale of the cube.
 	 * @param material The cube material.
 	 */
-	private CollidableCube(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale)
+	private CollidableCube(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float weight)
 	{
-		super(mesh, material, pos, rot, scale);
+		super(mesh, material, pos, rot, scale, weight);
 	}
 
 	/**
@@ -53,9 +53,9 @@ public class CollidableCube extends MoveableCollidableGameObject
 	 * @param scale The scale of the cube.
 	 * @return A CollidableCube.
 	 */
-	public static CollidableCube create(Vector3f pos, Vector3f rot, Vector3f scale)
+	public static CollidableCube create(Vector3f pos, Vector3f rot, Vector3f scale, float weight)
 	{
 		material.texturePath = texturePath;
-		return new CollidableCube(mesh, material, pos, rot, scale);
+		return new CollidableCube(mesh, material, pos, rot, scale, weight);
 	}
 }
