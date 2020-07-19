@@ -107,7 +107,6 @@ public abstract class Application implements Runnable
 	 */
 	private void update()
 	{
-		
 		CameraSystem.move(camera);
 		CollisionSystem.collisionDetection();
 		EntitySystem.updateEntities();
