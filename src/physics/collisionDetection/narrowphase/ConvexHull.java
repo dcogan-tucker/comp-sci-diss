@@ -71,7 +71,7 @@ public class ConvexHull
 			}
 			start = current;
 		}
-		
+	
 		Vector4f v4 = new Vector4f(start.toVector3f(), 1)
 				.mul(MatrixUtils.transformMatrix(state.position, 
 						state.rotation, ((Weight) entity.getComponent(Weight.class)).scale));

@@ -1,70 +1,90 @@
 package physics.integrator;
 
-import javax.xml.crypto.Data;
+import java.util.Arrays;
 
 import org.joml.Vector3f;
 
 import ecs.component.Moveable;
+import ecs.component.State;
 import ecs.component.Weight;
 import ecs.entity.Entity;
-import physics.collisionDetection.collisionData.CollisionResolver;
+import physics.collisionDetection.collisionData.Collision;
 import physics.collisionDetection.collisionData.ContactData;
-import physics.collisionDetection.narrowphase.Simplex;
+import physics.collisionDetection.collisionData.ContactPoint;
 
 public class ImpulseCalculator
 {
-	public static final float G = 6.67E-11f;
-	public static final float R = 6.38E6f;
-	public static final float M = 5.97E24f;
+	private static final float G = 6.67E-11f;
+	private static final float R = 6.38E6f;
+	private static final float M = 5.97E24f;
+	
+	public static final float GRAVITAIONAL_ACCELERATION = (G * M) / (R * R);
 	
 	private Entity a;
 	private Entity b;
-	private Simplex sim;
 	private ContactData data;
+	private ContactPoint average;
 	
-	private ImpulseCalculator(Entity a, Entity b, Simplex sim)
+	private ImpulseCalculator(Collision collision)
 	{
-		this.a = a;
-		this.b = b;
-		this.sim = sim;
-	}
-	
-	public static void calculate(Entity a, Entity b, Simplex sim)
-	{
-		ImpulseCalculator impc = new ImpulseCalculator(a, b, sim);
-		//return impc.calculate();
-	}
-	
-	private void calculate()
-	{
-		CollisionResolver cr = new CollisionResolver(sim);
-		if (cr.generateCollisionData())
+		this.a = collision.a;
+		this.b = collision.b;
+		this.data = collision.data;
+		average = new ContactPoint();
+		for (ContactPoint contact : data.contacts)
 		{
-			data = cr.getContactData();
+			average.worldNormal.add(contact.worldNormal);
+			average.worldPoint.add(contact.worldPoint);
+			average.penDepth += contact.penDepth;
 		}
 		
-		Vector3f na = normalForce(a);
-		Vector3f nb = normalForce(b);
-		
+		average.worldNormal.normalize();
+		average.worldPoint.div(4);
+		average.penDepth /= 4;
+	}
+	
+	public static void calculate(Collision collision)
+	{
+		ImpulseCalculator impc = new ImpulseCalculator(collision);
+		impc.resultantForce();
+	}
+	
+	private void resultantForce()
+	{
 		if (a.hasComponent(Moveable.class) && b.hasComponent(Moveable.class))
 		{
+			resultantForce(a);
+			resultantForce(b);
 		}
 		else if (a.hasComponent(Moveable.class))
 		{
-			
+			resultantForce(a);
 		}
 		else if (b.hasComponent(Moveable.class))
 		{
-			
-		}
+			resultantForce(b);
+		}	
 	}
 	
-	private Vector3f normalForce(Entity e)
+	
+	private void resultantForce(Entity a)
 	{
-		double angle = new Vector3f(data.worldNormal).negate()
-				.angle(new Vector3f(((Moveable) e.getComponent(Moveable.class)).momentum).normalize());
-		return new Vector3f(0, 9.81f, 0)
-				.mul(((Weight) e.getComponent(Weight.class)).mass)
-				.mul((float) Math.cos(angle));
+		float mass = ((Weight) a.getComponent(Weight.class)).mass;
+		Vector3f gravitationlForce = new Vector3f(0, -GRAVITAIONAL_ACCELERATION, 0).mul(mass);
+		Vector3f dirOfMotion = new Vector3f(((Moveable) a.getComponent(Moveable.class)).momentum).normalize();
+		float angle = new Vector3f(average.worldNormal).angle(dirOfMotion);
+		System.out.println(average);
+		Vector3f resultant = new Vector3f(average.worldNormal).normalize().mul((float) (gravitationlForce.length() * Math.sin(angle))).mul(100);
+		((Moveable) a.getComponent(Moveable.class)).force.set(resultant);
+	}
+	
+	public Entity getEntityA()
+	{
+		return a;
+	}
+	
+	public Entity getEntityB()
+	{
+		return b;
 	}
 }

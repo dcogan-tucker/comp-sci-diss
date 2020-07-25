@@ -19,6 +19,9 @@ public final class NarrowPhaseDetector
 	private static Simplex sim;
 	private static Vector3f currentDir;
 	
+	private static final int EXIT_ITERATION = 100;
+	private static int currentIteration;
+	
 	/**
 	 * Private constructor to ensure that the class isn't initialised unnecessarily. 
 	 */
@@ -84,11 +87,12 @@ public final class NarrowPhaseDetector
 		}
 		sim.push(sup);
 		currentDir = new Vector3f(sim.a.v).negate();
+		currentIteration = 0;
 		
 		while (true)
 		{
 			SupportPoint newSup = minkowskiDifference();
-			if (new Vector3f(newSup.v).dot(currentDir) < 0)
+			if (new Vector3f(newSup.v).dot(currentDir) < 0 || currentIteration++ > EXIT_ITERATION)
 			{
 				return false;
 			}

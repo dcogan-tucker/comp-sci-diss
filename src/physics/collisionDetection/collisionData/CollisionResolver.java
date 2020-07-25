@@ -12,7 +12,7 @@ import physics.collisionDetection.narrowphase.SupportPoint;
 
 public class CollisionResolver
 {
-	private ContactData data = new ContactData();
+	private ContactPoint data = new ContactPoint();
 	private List<Triangle> triangles = new ArrayList<>();
 	private List<Edge> edges = new ArrayList<>();
 	private int currentIteratioj = 0;
@@ -81,7 +81,7 @@ public class CollisionResolver
 		return true;
 	}
 
-	public ContactData getContactData()
+	public ContactPoint getContactPoint()
 	{
 		return data;
 	}
