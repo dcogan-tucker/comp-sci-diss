@@ -7,9 +7,11 @@ import org.joml.Vector3f;
 import ecs.component.Component;
 import ecs.component.Moveable;
 import ecs.component.State;
+import ecs.component.Weight;
 import ecs.entity.Camera;
 import ecs.entity.Entity;
 import physics.integrator.EulerIntegrator;
+import physics.integrator.ImpulseCalculator;
 
 /**
  * The system that moves entities in the scene.
@@ -19,7 +21,7 @@ import physics.integrator.EulerIntegrator;
  */
 public final class EntitySystem extends EngineSystem
 {
-	private static float dt = 1.0f / 144;
+	private static double delta;
 	
 	/**
 	 * Private constructor to ensure class isn't unnecessarily
@@ -34,8 +36,9 @@ public final class EntitySystem extends EngineSystem
 	/**
 	 * Updates all entities.
 	 */
-	public static void updateEntities()
+	public static void updateEntities(double dt)
 	{
+		delta = dt;
 		moveEntities();
 	}
 	
@@ -49,8 +52,14 @@ public final class EntitySystem extends EngineSystem
 		{
 			if (e.hasComponent(State.class) && !(e instanceof Camera))
 			{
-				EulerIntegrator.integrate(e, dt);
+				EulerIntegrator.integrate(e, (float) delta);
+				reapplyExternal(e, (Moveable) c);
 			}
 		});
+	}
+	
+	private static void reapplyExternal(Entity e, Moveable m)
+	{
+		m.force = new Vector3f(0, - ImpulseCalculator.GRAVITAIONAL_ACCELERATION * ((Weight) e.getComponent(Weight.class)).mass, 0);
 	}
 }

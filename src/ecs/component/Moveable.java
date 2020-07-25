@@ -10,6 +10,7 @@ import org.joml.Vector3f;
  */
 public class Moveable extends Component
 {
+	
 	/**
 	 * The force being applied to the entity.
 	 */
@@ -18,10 +19,10 @@ public class Moveable extends Component
 	/**
 	 * The momentum of the entity.
 	 */
-	public Vector3f momentum;
+	public Vector3f momentum = new Vector3f();
 	
 	/**
 	 * The velocity of the entity.
 	 */
-	public Vector3f velocity;
+	public Vector3f velocity = new Vector3f();
 }

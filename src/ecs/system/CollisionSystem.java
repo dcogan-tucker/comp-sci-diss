@@ -9,7 +9,10 @@ import ecs.component.Collidable;
 import ecs.component.Component;
 import ecs.entity.Entity;
 import physics.collisionDetection.broadphase.BroadPhaseDetector;
+import physics.collisionDetection.collisionData.Collision;
 import physics.collisionDetection.collisionData.CollisionResolver;
+import physics.collisionDetection.collisionData.ContactData;
+import physics.collisionDetection.collisionData.ContactPoint;
 import physics.collisionDetection.narrowphase.NarrowPhaseDetector;
 import physics.collisionDetection.narrowphase.Simplex;
 import physics.integrator.ImpulseCalculator;
@@ -24,6 +27,7 @@ public final class CollisionSystem extends EngineSystem
 {
 	private static List<Entity[]> broadPhaseCollisions = new ArrayList<>();
 	private static Map<Entity[], Simplex> narrowPhaseCollisions = new HashMap<>();
+	private static List<Collision> collisions = new ArrayList<>();
 	
 	/**
 	 * Private constructor to ensure that the class isn't unnecessarily
@@ -69,7 +73,42 @@ public final class CollisionSystem extends EngineSystem
 		
 		narrowPhaseCollisions.forEach((collidingPair, simplex)-> 
 			{
-				System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
+				CollisionResolver cr = new CollisionResolver(simplex);
+				if (cr.generateCollisionData())
+				{
+					Collision collision = new Collision();
+					collision.a = collidingPair[0];
+					collision.b = collidingPair[1];
+					ContactPoint point = cr.getContactPoint();
+					boolean contains = false;
+					boolean maxContacts = false;
+					for (int i = 0; i < collisions.size(); i++)
+					{
+						if (collisions.get(i).equals(collision))
+						{
+							collisions.get(i).data.addContact(point);
+							contains = true;
+							if  (collisions.get(i).data.num == 4)
+							{
+								maxContacts = true;
+								collision = collisions.get(i);
+							}
+							break;
+						}
+					}
+					if (!contains)
+					{
+						collision.data = new ContactData();
+						collision.data.addContact(point);
+						collisions.add(collision);
+					}
+					
+					if (maxContacts)
+					{
+						ImpulseCalculator.calculate(collision);
+						System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
+					}
+				}
 			});
 		
 		broadPhaseCollisions.clear();

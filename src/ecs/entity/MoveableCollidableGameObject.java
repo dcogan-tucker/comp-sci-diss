@@ -1,7 +1,6 @@
 package ecs.entity;
 
 import org.joml.Vector3f;
-
 import ecs.component.Material;
 import ecs.component.Mesh;
 import ecs.component.Moveable;
@@ -30,8 +29,8 @@ public class MoveableCollidableGameObject extends CollidableGameObject
 	{
 		super(mesh, material, pos, rot, scale, mass);
 		Moveable moveableComponent = new Moveable();
-		moveableComponent.force = new Vector3f(0, 
-				-(ImpulseCalculator.G * ImpulseCalculator.M * mass) / (ImpulseCalculator.R * ImpulseCalculator.R), 0);
+		float gravity = - ImpulseCalculator.GRAVITAIONAL_ACCELERATION * mass;
+		moveableComponent.force = new Vector3f(0, gravity, 0);
 		addComponent(moveableComponent);
 	}
 
