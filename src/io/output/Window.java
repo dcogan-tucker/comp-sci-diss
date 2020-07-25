@@ -10,6 +10,7 @@ import org.lwjgl.system.MemoryStack;
 import io.input.Input;
 import utils.MatrixUtils;
 
+import java.awt.Dimension;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -167,6 +168,17 @@ public class Window
 		{
 			glfwSetWindowTitle(window, title);
 		}
+	}
+	
+	/**
+	 * Sets the window dimensions in pixels.
+	 * 
+	 * @param dimension The dimension of the window as a java aw
+	 * dimension object.
+	 */
+	public void setDimensions(Dimension dimension)
+	{
+		setDimensions(dimension.width, dimension.height);
 	}
 	
 	/**

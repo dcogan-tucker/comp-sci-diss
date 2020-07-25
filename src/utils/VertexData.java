@@ -11,12 +11,12 @@ import org.joml.Vector3f;
  * @author Dominic Cogan-Tucker
  *
  */
-class Vertex
+class VertexData
 {
 	private Vector3f position;
 	private Vector2f texture;
 	private Vector3f normal;
-	private Vertex duplicate;
+	private VertexData duplicate;
 	private int index;
 	
 	/**
@@ -24,7 +24,7 @@ class Vertex
 	 * 
 	 * @param position The position of the vertex as a Vector3f.
 	 */
-	public Vertex(Vector3f position)
+	public VertexData(Vector3f position)
 	{
 		this.position = position;
 	}
@@ -60,7 +60,7 @@ class Vertex
 	 * 
 	 * @return The duplicate vertex or null if there isn't one.
 	 */
-	public Vertex getDuplicateVertex()
+	public VertexData getDuplicateVertex()
 	{
 		return duplicate;
 	}
@@ -70,7 +70,7 @@ class Vertex
 	 * 
 	 * @param duplicate The vertex to set as the duplicate vertex
 	 */
-	public void setDuplicateVertex(Vertex duplicate)
+	public void setDuplicateVertex(VertexData duplicate)
 	{
 		this.duplicate = duplicate;
 	}

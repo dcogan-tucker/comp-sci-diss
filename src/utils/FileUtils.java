@@ -67,7 +67,7 @@ public final class FileUtils
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line;
 		String[] currentLine;
-		List<Vertex> vertices = new ArrayList<>();
+		List<VertexData> vertices = new ArrayList<>();
 		List<Vector2f> textures = new ArrayList<>();
 		List<Vector3f> normals = new ArrayList<>();
 		List<Integer> indicies = new ArrayList<>();
@@ -79,7 +79,7 @@ public final class FileUtils
 				if (line.startsWith("v "))
 				{
 					currentLine = line.split(" ");
-					Vertex vertex = new Vertex(new Vector3f((float) Float.valueOf(currentLine[1]),
+					VertexData vertex = new VertexData(new Vector3f((float) Float.valueOf(currentLine[1]),
 							(float) Float.valueOf(currentLine[2]), (float) Float.valueOf(currentLine[3])));
 					vertices.add(vertex);
 				} 
@@ -130,11 +130,11 @@ public final class FileUtils
 	 * @param normals List of the object's normals.
 	 * @param indicies List of vertex indices.
 	 */
-	private static void processVertex(String[] vertex, List<Vertex> vertices, List<Vector2f> textures,
+	private static void processVertex(String[] vertex, List<VertexData> vertices, List<Vector2f> textures,
 			List<Vector3f> normals, List<Integer> indicies)
 	{
 		int index = Integer.parseInt(vertex[0]) - 1;
-		Vertex current = vertices.get(index);
+		VertexData current = vertices.get(index);
 		int textureIndex = Integer.parseInt(vertex[1]) - 1;
 		int normalIndex = Integer.parseInt(vertex[2]) - 1;
 		Vector2f texture = textures.get(textureIndex);
@@ -163,7 +163,7 @@ public final class FileUtils
 	 * @param vertices The list of vertices.
 	 * @param indicies The list of indicies.
 	 */
-	private static void reProcessVertex(Vertex previous, Vector2f texture, Vector3f normal, List<Vertex> vertices, List<Integer> indicies)
+	private static void reProcessVertex(VertexData previous, Vector2f texture, Vector3f normal, List<VertexData> vertices, List<Integer> indicies)
 	{
 		if (previous.hasSameTextureAndNormal(texture, normal))
 		{
@@ -171,14 +171,14 @@ public final class FileUtils
 		} 
 		else
 		{
-			Vertex newVertex = previous.getDuplicateVertex();
+			VertexData newVertex = previous.getDuplicateVertex();
 			if (newVertex != null)
 			{
 				reProcessVertex(newVertex, texture, normal, vertices, indicies);
 			}
 			else 
 			{
-				Vertex duplicate = new Vertex(previous.getPosition());
+				VertexData duplicate = new VertexData(previous.getPosition());
 				duplicate.setIndex(vertices.size());
 				duplicate.setTexture(texture);
 				duplicate.setNormal(normal);
@@ -196,7 +196,7 @@ public final class FileUtils
 	 * @param indiciesList The vertices indexing.
 	 * @return A mesh component, with the position, normal and texture data.
 	 */
-	private static Mesh convertToMesh(List<Vertex> verticesList, List<Integer> indiciesList)
+	private static Mesh convertToMesh(List<VertexData> verticesList, List<Integer> indiciesList)
 	{
 		float[] positions = new float[verticesList.size() * 3];
 		float[] textures = new float[verticesList.size() * 2];
