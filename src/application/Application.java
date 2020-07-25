@@ -25,7 +25,7 @@ public abstract class Application implements Runnable
 	private EntityShader shader;
 	private Camera camera;
 	
-	private double t = 0;
+	public static double t = 0;
 	private final double dt = 1.0 / 144;
 	private double currentTime;
 	private double accumulator = 0;
@@ -52,7 +52,7 @@ public abstract class Application implements Runnable
 			accumulator += frameTime;
 			while (accumulator >= dt)
 			{
-				update();
+				update(dt);
 				accumulator -= dt;
 				t += dt;
 			}
@@ -101,15 +101,15 @@ public abstract class Application implements Runnable
 	{
 		RenderSystem.initialise();
 	}
-	
+
 	/**
 	 * Update the application's systems. To be called every frame.
 	 */
-	private void update()
+	private void update(double dt)
 	{
 		CameraSystem.move(camera);
 		CollisionSystem.collisionDetection();
-		EntitySystem.updateEntities();
+		EntitySystem.updateEntities(dt);
 	}
 	
 	/**
