@@ -3,6 +3,7 @@ package ecs.system;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import ecs.component.Mesh;
 import ecs.component.State;
 import ecs.component.View;
 import ecs.component.Weight;
+import ecs.entity.Arrow;
 import ecs.entity.Camera;
 import ecs.entity.Entity;
 import openGLObjects.Vao;
@@ -30,6 +32,8 @@ public final class RenderSystem extends EngineSystem
 	private static EntityShader shader;
 	
 	protected static Map<Mesh, Map<Material, List<Entity>>> entities = new HashMap<>();
+	public static List<Entity> arrows = new ArrayList<>();
+	private static boolean arrowInitialised = false;
 	
 	/**
 	 * Private constructor to ensure that the class isn't unnecessarily
@@ -47,6 +51,7 @@ public final class RenderSystem extends EngineSystem
 	public static void initialise()
 	{
 		MaterialSystem.createAll();
+		MaterialSystem.create(Arrow.initMaterial());
 		MeshSystem.createAll();
 	}
 	
@@ -71,6 +76,7 @@ public final class RenderSystem extends EngineSystem
 		camera = cam;
 		shader = s;
 		cameraState = ((State) camera.getComponent(State.class));
+		generateArrows();
 		shader.bind();
 		entities.forEach((mesh, entities) -> 
 			{
@@ -124,5 +130,22 @@ public final class RenderSystem extends EngineSystem
 		shader.setViewMatrix(MatrixUtils.viewMatrix(cameraState.position, cameraState.rotation));
 		shader.setProjectionMatrix(((View) camera.getComponent(View.class)).window.getProjectionMatrix());
 		glDrawElements(GL_TRIANGLES, mesh.indices.length, GL_UNSIGNED_INT, 0);
+	}
+	
+	private static void generateArrows()
+	{
+		if (arrows.size() != 0)
+		{
+			Arrow a = (Arrow) arrows.get(0);
+			Mesh mesh = ((Mesh) a.getComponent(Mesh.class));
+			Material material = ((Material) a.getComponent(Material.class));
+			if (!arrowInitialised)
+			{
+				MeshSystem.create(mesh, material);
+			}
+			Map<Material, List<Entity>> map = new HashMap<>();
+			map.put(material, arrows);
+			entities.put(mesh, map);
+		}
 	}
 }

@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 
 import ecs.component.Material;
 import ecs.component.Mesh;
+import ecs.component.Weight;
 import utils.FileUtils;
 
 /**
@@ -38,9 +39,12 @@ public class CollidableCube extends MoveableCollidableGameObject
 	 * @param scale The scale of the cube.
 	 * @param material The cube material.
 	 */
-	private CollidableCube(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float weight)
+	private CollidableCube(Mesh mesh, Material material, Vector3f pos, Vector3f rot, float scale, float weight)
 	{
-		super(mesh, material, pos, rot, scale, weight);
+		super(mesh, material, pos, rot, new Vector3f(scale), weight);
+		Weight w = ((Weight) this.getComponent(Weight.class));
+		w.inertia = (1.0f / 6) * weight * scale * scale;
+		w.inverseInertia = 1.0f / w.inertia;
 	}
 
 	/**
@@ -53,7 +57,7 @@ public class CollidableCube extends MoveableCollidableGameObject
 	 * @param scale The scale of the cube.
 	 * @return A CollidableCube.
 	 */
-	public static CollidableCube create(Vector3f pos, Vector3f rot, Vector3f scale, float weight)
+	public static CollidableCube create(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		material.texturePath = texturePath;
 		return new CollidableCube(mesh, material, pos, rot, scale, weight);

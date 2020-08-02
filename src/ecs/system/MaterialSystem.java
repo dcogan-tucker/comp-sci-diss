@@ -57,7 +57,7 @@ final class MaterialSystem extends EngineSystem
 	 * 
 	 * @param m The material to create the texture for.
 	 */
-	private static void create(Material m)
+	protected static void create(Material m)
 	{
 		m.textureID = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, m.textureID);

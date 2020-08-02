@@ -17,9 +17,18 @@ public class Weight extends Component
 	
 	/**
 	 * The inverse mass of the entity.
-	 * 
 	 */
 	public float inverseMass;
+	
+	/**
+	 * The inertia of the entity.
+	 */
+	public float inertia;
+	
+	/**
+	 * The inverse inertia of the entity.
+	 */
+	public float inverseInertia;
 	
 	/**
 	 * THe scale of the entity.

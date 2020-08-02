@@ -14,7 +14,7 @@ public class Moveable extends Component
 	/**
 	 * The force being applied to the entity.
 	 */
-	public Vector3f force;
+	public Vector3f force = new Vector3f();
 	
 	/**
 	 * The momentum of the entity.
@@ -25,4 +25,25 @@ public class Moveable extends Component
 	 * The velocity of the entity.
 	 */
 	public Vector3f velocity = new Vector3f();
+	
+	/**
+	 * The torque being applied to the entity.
+	 */
+	public Vector3f torque = new Vector3f();
+	
+	/**
+	 * The angular momentum of the entity.
+	 */
+	public Vector3f angMomentum = new Vector3f();
+	
+	/**
+	 * The angular velocity of the entity.
+	 */
+	public Vector3f angVelocity = new Vector3f();
+	
+	/**
+	 * The value of the moveable component from the 
+	 * previous time step.
+	 */
+	public Moveable previous;
 }

@@ -7,7 +7,10 @@ import java.util.Map;
 
 import ecs.component.Collidable;
 import ecs.component.Component;
+import ecs.component.Moveable;
+import ecs.component.State;
 import ecs.entity.Entity;
+import ecs.entity.Plane;
 import physics.collisionDetection.broadphase.BroadPhaseDetector;
 import physics.collisionDetection.collisionData.Collision;
 import physics.collisionDetection.collisionData.CollisionResolver;
@@ -15,6 +18,7 @@ import physics.collisionDetection.collisionData.ContactData;
 import physics.collisionDetection.collisionData.ContactPoint;
 import physics.collisionDetection.narrowphase.NarrowPhaseDetector;
 import physics.collisionDetection.narrowphase.Simplex;
+import physics.integrator.EulerIntegrator;
 import physics.integrator.ImpulseCalculator;
 
 /**
@@ -41,7 +45,7 @@ public final class CollisionSystem extends EngineSystem
 	/**
 	 * Detects whether any Collidable entities are colliding in the scene.
 	 */
-	public static void collisionDetection()
+	public static void collisionDetection(float dt)
 	{
 		Map<Entity, Component> entitiesMap = Component.componentMap.get(Collidable.class);
 		List<Entity> entities = new ArrayList<Entity>();
@@ -56,9 +60,21 @@ public final class CollisionSystem extends EngineSystem
 				if (BroadPhaseDetector.areIntersecting(entities.get(i), entities.get(j)))
 				{
 					Entity[] collidingPair = new Entity[2];
-					collidingPair[0] = entities.get(i);
-					collidingPair[1] = entities.get(j);
-					broadPhaseCollisions.add(collidingPair);
+					if (entities.get(i).hasComponent(Moveable.class))
+					{
+						collidingPair[0] = entities.get(i);
+						collidingPair[1] = entities.get(j);
+					}
+					else if (entities.get(j).hasComponent(Moveable.class))
+					{
+						collidingPair[0] = entities.get(j);
+						collidingPair[1] = entities.get(i);
+					}
+					
+					if (collidingPair[0] != null)
+					{
+						broadPhaseCollisions.add(collidingPair);
+					}
 				}
 			}
 		}
@@ -76,23 +92,20 @@ public final class CollisionSystem extends EngineSystem
 				CollisionResolver cr = new CollisionResolver(simplex);
 				if (cr.generateCollisionData())
 				{
+					EulerIntegrator.stepBack(collidingPair);
+					
 					Collision collision = new Collision();
 					collision.a = collidingPair[0];
 					collision.b = collidingPair[1];
 					ContactPoint point = cr.getContactPoint();
 					boolean contains = false;
-					boolean maxContacts = false;
 					for (int i = 0; i < collisions.size(); i++)
 					{
 						if (collisions.get(i).equals(collision))
 						{
 							collisions.get(i).data.addContact(point);
 							contains = true;
-							if  (collisions.get(i).data.num == 4)
-							{
-								maxContacts = true;
-								collision = collisions.get(i);
-							}
+							collision = collisions.get(i);
 							break;
 						}
 					}
@@ -102,16 +115,13 @@ public final class CollisionSystem extends EngineSystem
 						collision.data.addContact(point);
 						collisions.add(collision);
 					}
-					
-					if (maxContacts)
-					{
-						ImpulseCalculator.calculate(collision);
-						System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
-					}
+					System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
+					ImpulseCalculator.calculate(collision, dt);
 				}
 			});
 		
 		broadPhaseCollisions.clear();
 		narrowPhaseCollisions.clear();
+		collisions.clear();
 	}
 }

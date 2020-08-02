@@ -60,6 +60,6 @@ public final class EntitySystem extends EngineSystem
 	
 	private static void reapplyExternal(Entity e, Moveable m)
 	{
-		m.force = new Vector3f(0, - ImpulseCalculator.GRAVITAIONAL_ACCELERATION * ((Weight) e.getComponent(Weight.class)).mass, 0);
+		m.force.set(0, -ImpulseCalculator.GRAVITAIONAL_ACCELERATION * ((Weight) e.getComponent(Weight.class)).mass, 0);
 	}
 }
