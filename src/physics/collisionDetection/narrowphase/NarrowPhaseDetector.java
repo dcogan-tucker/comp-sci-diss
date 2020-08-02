@@ -19,7 +19,7 @@ public final class NarrowPhaseDetector
 	private static Simplex sim;
 	private static Vector3f currentDir;
 	
-	private static final int EXIT_ITERATION = 100;
+	private static final int EXIT_ITERATION = 1000;
 	private static int currentIteration;
 	
 	/**

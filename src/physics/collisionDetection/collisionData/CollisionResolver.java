@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.joml.Vector3f;
 
+import ecs.component.Mesh;
+import ecs.entity.Arrow;
+import ecs.system.RenderSystem;
 import physics.collisionDetection.narrowphase.NarrowPhaseDetector;
 import physics.collisionDetection.narrowphase.Simplex;
 import physics.collisionDetection.narrowphase.SupportPoint;
@@ -114,6 +117,11 @@ public class CollisionResolver
 		data.worldNormal = new Vector3f(triangle.normal).negate();
 		
 		data.penDepth = Math.abs(new Vector3f(triangle.normal).dot(triangle.points[0].v));
+		
+		Vector3f axis = new Vector3f(0, 1, 0).cross(data.worldNormal).normalize();
+		float angle =  new Vector3f(0, 1, 0).angle(data.worldNormal);
+		Arrow arrow = Arrow.create(data.worldPoint, axis.mul((float) Math.toDegrees(angle)));
+		RenderSystem.arrows.add(arrow);
 	}
 	
 	private float[] barycentric(Vector3f p, Vector3f a, Vector3f b, Vector3f c)
