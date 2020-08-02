@@ -24,6 +24,7 @@ public abstract class Application implements Runnable
 	private Window window;
 	private EntityShader shader;
 	private Camera camera;
+	public boolean paused = false;
 	
 	public static double t = 0;
 	private final double dt = 1.0 / 144;
@@ -107,9 +108,24 @@ public abstract class Application implements Runnable
 	 */
 	private void update(double dt)
 	{
+		if (Keyboard.isPressed(GLFW_KEY_P))
+		{
+			if (!paused)
+			{
+				paused = true;
+			}
+			else
+			{
+				paused = false;
+			}
+		}
 		CameraSystem.move(camera);
-		CollisionSystem.collisionDetection();
-		EntitySystem.updateEntities(dt);
+		if (!paused)
+		{
+			EntitySystem.updateEntities(dt);
+			CollisionSystem.collisionDetection((float) dt);
+			
+		}
 	}
 	
 	/**
