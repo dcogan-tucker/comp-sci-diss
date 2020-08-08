@@ -1,12 +1,13 @@
 package physics.integrator;
 
-import java.util.Arrays;
 import org.joml.Vector3f;
 
 import ecs.component.Moveable;
 import ecs.component.State;
 import ecs.component.Weight;
+import ecs.entity.Arrow;
 import ecs.entity.Entity;
+import ecs.system.RenderSystem;
 import physics.collisionDetection.collisionData.Collision;
 import physics.collisionDetection.collisionData.ContactData;
 import physics.collisionDetection.collisionData.ContactPoint;
@@ -24,6 +25,8 @@ public class ImpulseCalculator
 	private ContactData data;
 	private ContactPoint average;
 	private float dt;
+	
+	private static Vector3f dirOfMotion = new Vector3f();
 	
 	private ImpulseCalculator(Collision collision, float dt)
 	{
@@ -57,28 +60,51 @@ public class ImpulseCalculator
 	{
 		if (a.hasComponent(Moveable.class) && b.hasComponent(Moveable.class))
 		{
-			generateResultantForce(a);
+			generateResultantForce(0);
 			generateTorque(a);
-			generateResultantForce(b);
+			generateResultantForce(1);
 			generateTorque(b);
+
 		}
 		else if (a.hasComponent(Moveable.class))
 		{
-			generateResultantForce(a);
+			generateResultantForce(0);
 			generateTorque(a);
+			generateSlidingForce(0);
+
 		}
 		else if (b.hasComponent(Moveable.class))
 		{
-			generateResultantForce(b);
+			generateResultantForce(1);
 			generateTorque(b);
-		}	
+			generateSlidingForce(1);
+		}
+		//generateNormalArrows();
 	}
 	
 	
-	private void generateResultantForce(Entity a)
+	private void generateResultantForce(int entity)
 	{
+		Entity a;
+		Entity b;
+		if (entity == 0)
+		{
+			a = this.a;
+			b = this.b;
+		}
+		else
+		{
+			a = this.b;
+			b = this.a;
+		}
 		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
-		Vector3f dirOfMotion = new Vector3f(mov.momentum).normalize();
+		Weight weightA = ((Weight) a.getComponent(Weight.class));
+		Weight weightB = ((Weight) b.getComponent(Weight.class));
+		if (Math.abs(mov.momentum.length()) < 1E-2f)
+		{
+			mov.momentum.set(0);
+		}
+		dirOfMotion.set(mov.momentum).normalize();
 		if (mov.momentum.equals(new Vector3f()))
 		{
 			dirOfMotion.set(0, -1, 0);
@@ -86,6 +112,10 @@ public class ImpulseCalculator
 		if (dirOfMotion.dot(average.worldNormal) > 0)
 		{
 			average.worldNormal.negate();
+		}
+		else if (dirOfMotion.equals(new Vector3f(0, 1, 0)) || dirOfMotion.equals(new Vector3f(0, -1, 0)) && (Math.abs(dirOfMotion.dot(average.worldNormal)) < 0.71f))
+		{
+			average.worldNormal.set(dirOfMotion).negate();
 		}
 		Vector3f axis = new Vector3f(dirOfMotion).cross(average.worldNormal);
 		float angle = new Vector3f(dirOfMotion).angle(average.worldNormal);
@@ -95,7 +125,7 @@ public class ImpulseCalculator
 		}
 		Vector3f resultant = new Vector3f(mov.momentum).negate()
 				.add(new Vector3f(average.worldNormal).normalize().rotateAxis(-angle, axis.x, axis.y, axis.z)
-						.mul(mov.momentum.length()).mul(1f)).div(dt);
+						.mul(mov.momentum.length()).mul((weightA.restitution + weightB.restitution) / 2)).div(dt);
 		if (resultant.equals(new Vector3f(Float.NaN)))
 		{
 			resultant.set(0);
@@ -110,29 +140,62 @@ public class ImpulseCalculator
 	private void generateTorque(Entity a)
 	{
 		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
-		Vector3f dirOfMotion = new Vector3f(mov.momentum).normalize();
 		State state = ((State) a.getComponent(State.class));
-		Vector3f rotatedAxis = new Vector3f();
-		if (!state.rotation.equals(new Vector3f()))
+		Weight weight = ((Weight) a.getComponent(Weight.class));
+		Vector3f torqueDir = new Vector3f(average.worldNormal).cross(dirOfMotion);
+		Vector3f entityOrientation = new Vector3f(0, 1, 0)
+				.rotateX((float) Math.toRadians(state.rotation.x ))
+				.rotateY((float) Math.toRadians(state.rotation.y))
+				.rotateZ((float) Math.toRadians(state.rotation.z));
+		Vector3f torque = new Vector3f();
+		if ((torqueDir.x != 0 || torqueDir.y != 0 || torqueDir.z != 0) && average.worldNormal.dot(entityOrientation) < 0.9985f && average.worldNormal.dot(entityOrientation) > -0.9985f)
 		{
-			rotatedAxis.set(state.rotation).normalize();
+			torque.set(torqueDir.normalize().mul(9.81f * weight.mass));
 		}
-		float angleToNormal = state.rotation.length();
-		Vector3f torque;
-		if (dirOfMotion.dot(average.worldNormal) < -0.95f 
-				|| average.worldNormal
-				.dot(new Vector3f(0, 1, 0)
-						.rotateAxis((float) Math.toRadians(angleToNormal), rotatedAxis.x, rotatedAxis.y, rotatedAxis.z)) > 0.9999f)
+		mov.torque.set(torque);
+		//System.out.println(average.worldNormal.dot(entityOrientation));
+	}
+	
+	private void generateSlidingForce(int entity)
+	{
+		Entity a;
+		Entity b;
+		if (entity == 0)
 		{
-			torque = new Vector3f();
+			a = this.a;
+			b = this.b;
 		}
 		else
 		{
-			torque = new Vector3f(average.worldNormal).cross(dirOfMotion).normalize().mul(9.81f);
+			a = this.b;
+			b = this.a;
 		}
-		((Moveable) a.getComponent(Moveable.class)).torque.set(torque);
+		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
+		State state = ((State) a.getComponent(State.class));
+		Weight weightA = ((Weight) a.getComponent(Weight.class));
+		Weight weightB = ((Weight) b.getComponent(Weight.class));
+		Vector3f resultant = new Vector3f(average.worldNormal).normalize().mul(weightA.mass * 9.81f).div((float) (weightA.friction * Math.sin(Math.toRadians(state.rotation.length()))  + Math.cos(Math.toRadians(state.rotation.length()))));
+		Vector3f rotationAxis = new Vector3f(state.rotation).normalize();			
+		Vector3f frictionDir = new Vector3f(resultant).cross(rotationAxis).normalize();
+		Vector3f friction = new Vector3f(frictionDir).mul(resultant.length() * (weightA.friction + weightB.friction) / 2);
+		Vector3f gravComponent = new Vector3f(frictionDir).normalize().negate().mul((float) (weightA.mass * 9.81f * Math.sin(Math.toRadians(state.rotation.length()))));
+		if (!frictionDir.equals(new Vector3f(Float.NaN)))
+		{
+			if (gravComponent.length() > friction.length())
+			{
+				state.position.add(new Vector3f(friction).add(gravComponent).mul(dt).mul(weightA.inverseMass).mul(dt).mul(20));
+			}
+		}
 	}
 	
+	private void generateNormalArrows()
+	{
+		Vector3f axis = new Vector3f(0, 1, 0).cross(average.worldNormal).normalize();
+		float angle =  new Vector3f(0, 1, 0).angle(average.worldNormal);
+		Arrow arrow = Arrow.create(average.worldPoint, axis.mul((float) Math.toDegrees(angle)));
+		RenderSystem.arrows.add(arrow);
+	}
+
 	public Entity getEntityA()
 	{
 		return a;

@@ -9,23 +9,27 @@ import ecs.entity.Entity;
 
 public final class EulerIntegrator
 {
-	private static float SCALE = 0.4f;
-	
-	public static void integrate(Entity e, float dt)
+	public static void integrate(float dt, Entity... entities)
 	{
-		Moveable mov = ((Moveable) e.getComponent(Moveable.class));
-		State state = ((State) e.getComponent(State.class));
-		setPrevious(mov, state);
-		Weight weight = ((Weight) e.getComponent(Weight.class));
-		mov.momentum.add(new Vector3f(mov.force).mul(dt));
-		mov.velocity = new Vector3f(mov.momentum).mul(weight.inverseMass);
-		state.position.add(new Vector3f(mov.velocity).mul(dt).mul(SCALE));
-		mov.angMomentum.set(new Vector3f(mov.torque).mul(dt));
-		mov.angVelocity = new Vector3f(mov.angMomentum).mul(weight.inverseInertia);
-		state.rotation.add(new Vector3f(
-				(float) Math.toDegrees(mov.angVelocity.x),
-				(float) Math.toDegrees(mov.angVelocity.y),
-				(float) Math.toDegrees(mov.angVelocity.z)).mul(dt));
+		for (Entity e : entities)
+		{
+			if (e.hasComponent(Moveable.class))
+			{
+				Moveable mov = ((Moveable) e.getComponent(Moveable.class));
+				State state = ((State) e.getComponent(State.class));
+				setPrevious(mov, state);
+				Weight weight = ((Weight) e.getComponent(Weight.class));
+				mov.momentum.add(new Vector3f(mov.force).mul(dt));
+				mov.velocity = new Vector3f(mov.momentum).mul(weight.inverseMass);
+				state.position.add(new Vector3f(mov.velocity).mul(dt));
+				mov.angMomentum.set(new Vector3f(mov.torque).mul(dt));
+				mov.angVelocity.set(mov.angMomentum).mul(weight.inverseInertia);
+				state.rotation.add(new Vector3f(
+						(float) Math.toDegrees(mov.angVelocity.x),
+						(float) Math.toDegrees(mov.angVelocity.y),
+						(float) Math.toDegrees(mov.angVelocity.z)).mul(dt));
+			}
+		}
 	}
 	
 	public static void stepBack(Entity[] entities)
