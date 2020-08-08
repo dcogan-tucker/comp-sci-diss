@@ -52,7 +52,7 @@ public final class EntitySystem extends EngineSystem
 		{
 			if (e.hasComponent(State.class) && !(e instanceof Camera))
 			{
-				EulerIntegrator.integrate(e, (float) delta);
+				EulerIntegrator.integrate((float) delta, e);
 				reapplyExternal(e, (Moveable) c);
 			}
 		});

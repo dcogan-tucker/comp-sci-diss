@@ -115,7 +115,7 @@ public final class CollisionSystem extends EngineSystem
 						collision.data.addContact(point);
 						collisions.add(collision);
 					}
-					System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
+					//System.out.println(collidingPair[0] + " is colliding with " + collidingPair[1]);
 					ImpulseCalculator.calculate(collision, dt);
 				}
 			});
