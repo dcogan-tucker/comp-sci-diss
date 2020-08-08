@@ -31,6 +31,16 @@ public class Weight extends Component
 	public float inverseInertia;
 	
 	/**
+	 * The coefficient of restitution for the entity. 
+	 */
+	public float restitution = 1f;
+	
+	/**
+	 * The coefficient of friction for the entity.
+	 */
+	public float friction = 0f;
+	
+	/**
 	 * THe scale of the entity.
 	 */
 	public Vector3f scale;
