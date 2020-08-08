@@ -26,7 +26,7 @@ public class Plane extends CollidableGameObject
 
 	private Plane(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector2f scale)
 	{
-		super(mesh, material, pos, rot, new Vector3f(scale.x, 0.2f, scale.y), Float.POSITIVE_INFINITY);
+		super(mesh, material, pos, rot, new Vector3f(scale.x, 0f, scale.y), Float.POSITIVE_INFINITY);
 	}
 	
 	public static Plane create(Vector3f pos, Vector3f rot, Vector2f scale)
