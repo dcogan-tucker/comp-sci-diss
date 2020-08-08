@@ -33,18 +33,21 @@ public class Main extends Application
 		CollidableCube cube = CollidableCube.create(
 				new Vector3f(1, 1, -6), 
 				new Vector3f(45, 45, 45), 
-				1, 1);
-		((Moveable) cube.getComponent(Moveable.class)).momentum.set(0, 0, -15);
+				0.5f, 1);
+		((Moveable) cube.getComponent(Moveable.class)).momentum.set(0, 0, -5);
 		Sphere sphere = Sphere.create(
 				new Vector3f(0, 2, -7),
 				new Vector3f(0, 0, 0), 
-				0.03f, 1);
-		((Moveable) sphere.getComponent(Moveable.class)).momentum.set(-5, -5, -5);
+				0.015f, 1);
+		((Moveable) sphere.getComponent(Moveable.class)).momentum.set(-2, -2, -2);
 		CollidableCube cube2 = CollidableCube.create(
 				new Vector3f(-1, 0.5f, -7), 
 				new Vector3f(0, 0, 0), 
-				1, 1);
-		((Moveable) cube2.getComponent(Moveable.class)).momentum.set(-10, 0, 0);
+				0.5f, 1);
+		((Moveable) cube2.getComponent(Moveable.class)).momentum.set(-5, 0, 0);
+		((Weight) cube.getComponent(Weight.class)).restitution = 0.4f;
+		((Weight) cube2.getComponent(Weight.class)).restitution = 0.4f;
+		((Weight) sphere.getComponent(Weight.class)).restitution = 0.4f;
 	}
 
 	public static void main(String[] args)
