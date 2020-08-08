@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ecs.component.Mesh;
+import ecs.component.Moveable;
 import ecs.component.State;
 import ecs.component.Weight;
 import ecs.entity.Entity;
@@ -44,10 +45,20 @@ public class ConvexHull
 	protected Vector3f generateSupportPoint(Vector3f direction)
 	{
 		State state = ((State) entity.getComponent(State.class));
-		
-		direction.rotateX((float) Math.toRadians(-state.rotation.x));
-		direction.rotateY((float) Math.toRadians(-state.rotation.y));
-		direction.rotateZ((float) Math.toRadians(-state.rotation.z));
+		Vector3f rot = new Vector3f(state.rotation);
+		if (entity.hasComponent(Moveable.class))
+		{
+			if (rot.x > 0) rot.x = -rot.x;
+			if (rot.y > 0) rot.y = -rot.y;
+			if (rot.z > 0) rot.z = -rot.z;
+			
+			if (rot.x < -45) rot.x = -45 + -rot.x % 45;
+			if (rot.y < -45) rot.y = -45 + -rot.y % 45;
+			if (rot.z < -45) rot.z = -45 + -rot.z % 45;
+		}
+		direction.rotateX((float) Math.toRadians(-rot.x));
+		direction.rotateY((float) Math.toRadians(-rot.y));
+		direction.rotateZ((float) Math.toRadians(-rot.z));
 		direction.normalize();
 		
 		Vertex start = vertices.get(0);
@@ -74,7 +85,7 @@ public class ConvexHull
 	
 		Vector4f v4 = new Vector4f(start.toVector3f(), 1)
 				.mul(MatrixUtils.transformMatrix(state.position, 
-						state.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
+						rot, ((Weight) entity.getComponent(Weight.class)).scale));
 		return new Vector3f(v4.x, v4.y, v4.z);
 	}
 	
