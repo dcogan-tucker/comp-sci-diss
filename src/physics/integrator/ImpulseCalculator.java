@@ -7,10 +7,12 @@ import ecs.component.State;
 import ecs.component.Weight;
 import ecs.entity.Arrow;
 import ecs.entity.Entity;
+import ecs.entity.Sphere;
 import ecs.system.RenderSystem;
 import physics.collisionDetection.collisionData.Collision;
 import physics.collisionDetection.collisionData.ContactData;
 import physics.collisionDetection.collisionData.ContactPoint;
+import utils.Vector3fUtils;
 
 public class ImpulseCalculator
 {
@@ -123,7 +125,7 @@ public class ImpulseCalculator
 		{
 			angle = 0;
 		}
-		Vector3f resultant = new Vector3f(mov.momentum).negate()
+		Vector3f resultant = new Vector3f(average.worldNormal.x * mov.momentum.x, average.worldNormal.y * mov.momentum.y, average.worldNormal.z * mov.momentum.z).negate()
 				.add(new Vector3f(average.worldNormal).normalize().rotateAxis(-angle, axis.x, axis.y, axis.z)
 						.mul(mov.momentum.length()).mul((weightA.restitution + weightB.restitution) / 2)).div(dt);
 		if (resultant.equals(new Vector3f(Float.NaN)))
@@ -153,7 +155,10 @@ public class ImpulseCalculator
 			torque.set(torqueDir.normalize().mul(9.81f * weight.mass));
 		}
 		mov.torque.set(torque);
-		//System.out.println(average.worldNormal.dot(entityOrientation));
+		if (a instanceof Sphere)
+		{
+			mov.torque.mul(5);
+		}
 	}
 	
 	private void generateSlidingForce(int entity)
@@ -170,20 +175,27 @@ public class ImpulseCalculator
 			a = this.b;
 			b = this.a;
 		}
-		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
-		State state = ((State) a.getComponent(State.class));
-		Weight weightA = ((Weight) a.getComponent(Weight.class));
-		Weight weightB = ((Weight) b.getComponent(Weight.class));
-		Vector3f resultant = new Vector3f(average.worldNormal).normalize().mul(weightA.mass * 9.81f).div((float) (weightA.friction * Math.sin(Math.toRadians(state.rotation.length()))  + Math.cos(Math.toRadians(state.rotation.length()))));
-		Vector3f rotationAxis = new Vector3f(state.rotation).normalize();			
-		Vector3f frictionDir = new Vector3f(resultant).cross(rotationAxis).normalize();
-		Vector3f friction = new Vector3f(frictionDir).mul(resultant.length() * (weightA.friction + weightB.friction) / 2);
-		Vector3f gravComponent = new Vector3f(frictionDir).normalize().negate().mul((float) (weightA.mass * 9.81f * Math.sin(Math.toRadians(state.rotation.length()))));
-		if (!frictionDir.equals(new Vector3f(Float.NaN)))
+		if (!b.hasComponent(Moveable.class) && average.worldNormal.angle(new Vector3f(0, 1, 0)) > 0.1f)
 		{
-			if (gravComponent.length() > friction.length())
+			State state = ((State) a.getComponent(State.class));
+			Weight weightA = ((Weight) a.getComponent(Weight.class));
+			Weight weightB = ((Weight) b.getComponent(Weight.class));
+			Vector3f resultant = new Vector3f(average.worldNormal).normalize().mul(weightA.mass * 9.81f).div((float) (weightA.friction * Math.sin(Math.toRadians(state.rotation.length()))  + Math.cos(Math.toRadians(state.rotation.length()))));
+			Vector3f rotationAxis = new Vector3f(state.rotation).normalize();			
+			Vector3f frictionDir = new Vector3f(resultant).cross(rotationAxis).normalize();
+			Vector3f friction = new Vector3f(frictionDir).mul(resultant.length() * (weightA.friction + weightB.friction) / 2);
+			Vector3f gravComponent = new Vector3f(frictionDir).normalize().negate().mul((float) (weightA.mass * 9.81f * Math.sin(Math.toRadians(state.rotation.length()))));
+			if (!frictionDir.equals(new Vector3f(Float.NaN)))
 			{
-				state.position.add(new Vector3f(friction).add(gravComponent).mul(dt).mul(weightA.inverseMass).mul(dt).mul(20));
+				if (gravComponent.length() > friction.length())
+				{
+					state.position.add(new Vector3f(friction).add(gravComponent).mul(dt).mul(weightA.inverseMass));
+				}
+				if (a instanceof Sphere && weightA.friction != 0 && weightB.friction != 0)
+				{
+					Vector3f torque = new Vector3f(new Vector3f(rotationAxis).mul(friction.length()));
+					state.rotation.add(Vector3fUtils.toDegrees(new Vector3f(torque).mul(weightA.inverseInertia * dt * 0.1f)));
+				}
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import ecs.component.Moveable;
 import ecs.component.State;
 import ecs.component.Weight;
 import ecs.entity.Entity;
+import utils.Vector3fUtils;
 
 public final class EulerIntegrator
 {
@@ -24,10 +25,7 @@ public final class EulerIntegrator
 				state.position.add(new Vector3f(mov.velocity).mul(dt));
 				mov.angMomentum.set(new Vector3f(mov.torque).mul(dt));
 				mov.angVelocity.set(mov.angMomentum).mul(weight.inverseInertia);
-				state.rotation.add(new Vector3f(
-						(float) Math.toDegrees(mov.angVelocity.x),
-						(float) Math.toDegrees(mov.angVelocity.y),
-						(float) Math.toDegrees(mov.angVelocity.z)).mul(dt));
+				state.rotation.add(Vector3fUtils.toDegrees(new Vector3f(mov.angVelocity).mul(dt)));
 			}
 		}
 	}
