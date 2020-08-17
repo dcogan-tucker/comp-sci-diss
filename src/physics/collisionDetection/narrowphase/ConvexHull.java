@@ -11,6 +11,7 @@ import ecs.component.Moveable;
 import ecs.component.State;
 import ecs.component.Weight;
 import ecs.entity.Entity;
+import ecs.entity.Sphere;
 import utils.MatrixUtils;
 
 /**
@@ -45,21 +46,25 @@ public class ConvexHull
 	protected Vector3f generateSupportPoint(Vector3f direction)
 	{
 		State state = ((State) entity.getComponent(State.class));
-		Vector3f rot = new Vector3f(state.rotation);
-		if (entity.hasComponent(Moveable.class))
+		Vector3f rot = new Vector3f();
+		if (!(entity instanceof Sphere))
 		{
-			if (rot.x > 0) rot.x = -rot.x;
-			if (rot.y > 0) rot.y = -rot.y;
-			if (rot.z > 0) rot.z = -rot.z;
-			
-			if (rot.x < -45) rot.x = -45 + -rot.x % 45;
-			if (rot.y < -45) rot.y = -45 + -rot.y % 45;
-			if (rot.z < -45) rot.z = -45 + -rot.z % 45;
+			rot.set(state.rotation);
+			if (entity.hasComponent(Moveable.class))
+			{
+				if (rot.x > 0) rot.x = -rot.x;
+				if (rot.y > 0) rot.y = -rot.y;
+				if (rot.z > 0) rot.z = -rot.z;
+				
+				if (rot.x < -45) rot.x = -45 + -rot.x % 45;
+				if (rot.y < -45) rot.y = -45 + -rot.y % 45;
+				if (rot.z < -45) rot.z = -45 + -rot.z % 45;
+			}
+			direction.rotateX((float) Math.toRadians(-rot.x));
+			direction.rotateY((float) Math.toRadians(-rot.y));
+			direction.rotateZ((float) Math.toRadians(-rot.z));
+			direction.normalize();
 		}
-		direction.rotateX((float) Math.toRadians(-rot.x));
-		direction.rotateY((float) Math.toRadians(-rot.y));
-		direction.rotateZ((float) Math.toRadians(-rot.z));
-		direction.normalize();
 		
 		Vertex start = vertices.get(0);
 		while (true)
