@@ -12,7 +12,7 @@ import ecs.entity.Sphere;
 import io.output.DisplayManager;
 import io.output.Window;
 
-public class CubeSlopeDemo extends Application
+public class SphereSlopeDemo extends Application
 {
 
 	@Override
@@ -25,20 +25,19 @@ public class CubeSlopeDemo extends Application
 	@Override
 	protected void scene(Camera camera)
 	{
-		Plane slope = Plane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -20), new Vector2f(5, 5));
-		
-		CollidableCube cube = CollidableCube.create(
-				new Vector3f(-1f, 1f, -7.5f), 
+		Plane slope = Plane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -20), new Vector2f(5, 5));		
+		Sphere sphere = Sphere.create(
+				new Vector3f(-1.5f, 1f, -7.5f), 
 				new Vector3f(0, 0, 0), 
-				0.8f, 1);
-		((Weight) slope.getComponent(Weight.class)).restitution = 0.3f;
-		((Weight) cube.getComponent(Weight.class)).restitution = 0.3f;
-		((Weight) slope.getComponent(Weight.class)).friction = 0.3f;
-		((Weight) cube.getComponent(Weight.class)).friction = 0.3f;
+				0.025f, 1);
+		((Weight) slope.getComponent(Weight.class)).restitution = 0.4f;
+		((Weight) sphere.getComponent(Weight.class)).restitution = 0.5f;
+		((Weight) slope.getComponent(Weight.class)).friction = 0.2f;
+		((Weight) sphere.getComponent(Weight.class)).friction = 0.2f;
 	}
 	
 	public static void main(String[] args)
 	{
-		new CubeSlopeDemo().start();
+		new SphereSlopeDemo().start();
 	}
 }

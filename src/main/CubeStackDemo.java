@@ -9,6 +9,7 @@ import ecs.component.Weight;
 import ecs.entity.Camera;
 import ecs.entity.CollidableCube;
 import ecs.entity.Plane;
+import ecs.entity.Sphere;
 import io.output.DisplayManager;
 import io.output.Window;
 
@@ -32,28 +33,23 @@ public class CubeStackDemo extends Application
 				new Vector3f(0, 0, 0), 
 				1, 1);
 		CollidableCube cube1 = CollidableCube.create(
-				new Vector3f(0, 3f, -7.5f), 
+				new Vector3f(0, 2f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
 		CollidableCube cube2 = CollidableCube.create(
-				new Vector3f(0, 6f, -7.5f), 
+				new Vector3f(0, 4f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
 		CollidableCube cube3 = CollidableCube.create(
-				new Vector3f(0, 9f, -7.5f), 
-				new Vector3f(0, 0, 0), 
-				1, 1);
-		CollidableCube cube4 = CollidableCube.create(
-				new Vector3f(0, 12f, -7.5f), 
+				new Vector3f(0, 6f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
 		
-		((Weight) plane.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) cube.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) cube1.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) cube2.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) cube3.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) cube4.getComponent(Weight.class)).restitution = 0.1f;
+		((Weight) plane.getComponent(Weight.class)).restitution = 0.2f;
+		((Weight) cube.getComponent(Weight.class)).restitution = 0.2f;
+		((Weight) cube1.getComponent(Weight.class)).restitution = 0.2f;
+		((Weight) cube2.getComponent(Weight.class)).restitution = 0.2f;
+		((Weight) cube3.getComponent(Weight.class)).restitution = 0.2f;
 	}
 
 	public static void main(String[] args)
