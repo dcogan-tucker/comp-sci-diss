@@ -48,11 +48,15 @@ public final class RenderSystem extends EngineSystem
 	 * Initialises the rendering process by creating the materials
 	 * and meshes.
 	 */
-	public static void initialise()
+	public static void initialise(Camera cam, EntityShader s)
 	{
 		MaterialSystem.createAll();
 		MaterialSystem.create(Arrow.initMaterial());
 		MeshSystem.createAll();
+		camera = cam;
+		cameraState = ((State) camera.getComponent(State.class));
+		shader = s;
+		shader.bind();
 	}
 	
 	/**
@@ -71,13 +75,9 @@ public final class RenderSystem extends EngineSystem
 	 * @param cam The camera view of the scene.
 	 * @param s The shader program to use.
 	 */
-	public static void renderMeshes(Camera cam, EntityShader s)
+	public static void renderMeshes()
 	{
-		camera = cam;
-		shader = s;
-		cameraState = ((State) camera.getComponent(State.class));
 		generateArrows();
-		shader.bind();
 		entities.forEach((mesh, entities) -> 
 			{
 				Vao vao = mesh.vao;
@@ -100,7 +100,7 @@ public final class RenderSystem extends EngineSystem
 					});
 				glDisableVertexAttribArray(0);
 			});
-		shader.unbind();
+		//shader.unbind();
 	}
 	
 	/**

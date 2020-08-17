@@ -100,7 +100,7 @@ public abstract class Application implements Runnable
 	 */
 	private void createScene()
 	{
-		RenderSystem.initialise();
+		RenderSystem.initialise(camera, shader);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public abstract class Application implements Runnable
 	private void render()
 	{
 		window.update();
-		RenderSystem.renderMeshes(camera, shader);
+		RenderSystem.renderMeshes();
 		window.render();
 	}
 	
