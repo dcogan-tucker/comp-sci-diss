@@ -7,6 +7,13 @@ import ecs.component.Material;
 import ecs.component.Mesh;
 import utils.FileUtils;
 
+/**
+ * 
+ * A two dimensional collidable plane with infinite mass. 
+ * 
+ * @author Dominic Cogan-Tucker
+ *
+ */
 public class Plane extends CollidableGameObject
 {
 	/**
@@ -24,15 +31,33 @@ public class Plane extends CollidableGameObject
 	 */
 	private static Material material = new Material();
 
-	private Plane(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector2f scale)
+	/**
+	 * Constructs a plane at a given position within the scene that is collidable with a given
+	 * rotation, scale and material.
+	 * 
+	 * @param pos The position in the scene.
+	 * @param rot The rotation of the plane.
+	 * @param scale The scale of the plane.
+	 */
+	private Plane(Vector3f pos, Vector3f rot, Vector2f scale)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale.x, 0f, scale.y), Float.POSITIVE_INFINITY);
 	}
 	
+	/**
+	 * Constructs a Plane with the given position, rotation and scale.
+	 * constructor as to ensure that the static create method is used to create a new 
+	 * Plane entity.
+	 * 
+	 * @param pos The position in the scene.
+	 * @param rot The plane's rotation.
+	 * @param scale The scale of the plane.
+	 * @return A Plane Object with the given parameters.
+	 */
 	public static Plane create(Vector3f pos, Vector3f rot, Vector2f scale)
 	{
 		material.texturePath = texturePath;
-		return new Plane(mesh, material, pos, rot, scale);
+		return new Plane(pos, rot, scale);
 	}
 
 }

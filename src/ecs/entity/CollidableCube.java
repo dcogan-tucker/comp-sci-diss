@@ -37,9 +37,9 @@ public class CollidableCube extends MoveableCollidableGameObject
 	 * @param pos The position in the scene.
 	 * @param rot The rotation of the cube.
 	 * @param scale The scale of the cube.
-	 * @param material The cube material.
+	 * @param weight The weight of the cube.
 	 */
-	private CollidableCube(Mesh mesh, Material material, Vector3f pos, Vector3f rot, float scale, float weight)
+	private CollidableCube(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), weight);
 		Weight w = ((Weight) this.getComponent(Weight.class));
@@ -48,18 +48,19 @@ public class CollidableCube extends MoveableCollidableGameObject
 	}
 
 	/**
-	 * Constructs a CollidableCube with the given position, rotation and scale. Private 
+	 * Constructs a CollidableCube with the given position, rotation, scale and weight.
 	 * constructor as to ensure that the static create method is used to create a new 
 	 * CollidableCube entity.
 	 * 
 	 * @param pos The position in the scene.
 	 * @param rot The cube's rotation.
 	 * @param scale The scale of the cube.
-	 * @return A CollidableCube.
+	 * @param weight The weight of the cube.
+	 * @return A CollidableCube with the given parameters.
 	 */
 	public static CollidableCube create(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		material.texturePath = texturePath;
-		return new CollidableCube(mesh, material, pos, rot, scale, weight);
+		return new CollidableCube(pos, rot, scale, weight);
 	}
 }

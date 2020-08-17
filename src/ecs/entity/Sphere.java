@@ -25,7 +25,16 @@ public class Sphere extends MoveableCollidableGameObject
 	 */
 	private static Material material = new Material();
 	
-	private Sphere(Mesh mesh, Material material, Vector3f pos, Vector3f rot, float scale, float mass)
+	/**
+	 * Constructs a Sphere at a given position within the scene with a given
+	 * rotation, scale and material.
+	 * 
+	 * @param pos The position in the scene.
+	 * @param rot The rotation of the sphere.
+	 * @param scale The scale of the sphere.
+	 * @param weight The weight of the sphere.
+	 */
+	private Sphere(Vector3f pos, Vector3f rot, float scale, float mass)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), mass);
 		Weight w = ((Weight) this.getComponent(Weight.class));
@@ -33,9 +42,20 @@ public class Sphere extends MoveableCollidableGameObject
 		w.inverseInertia = 1.0f / w.inertia;
 	}
 
+	/**
+	 * Constructs a Sphere with the given position, rotation, scale and weight.
+	 * constructor as to ensure that the static create method is used to create a new 
+	 * Sphere entity.
+	 * 
+	 * @param pos The position in the scene.
+	 * @param rot The sphere's rotation.
+	 * @param scale The scale of the sphere.
+	 * @param weight The weight of the sphere.
+	 * @return A Sphere with the given parameters.
+	 */
 	public static Sphere create(Vector3f pos, Vector3f rot, float scale, float mass)
 	{
 		material.texturePath = texturePath;
-		return new Sphere(mesh, material, pos, rot, scale, mass);
+		return new Sphere(pos, rot, scale, mass);
 	}
 }
