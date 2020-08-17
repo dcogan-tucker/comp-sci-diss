@@ -23,6 +23,7 @@ public abstract class ShaderProgram
 
 	private String vertexFile, fragmentFile;
 	private int vertexID, fragmentID, programID;
+	private boolean isBound = false;
 
 	/**
 	 * Constructs a ShaderProgram object with the file location of it's vertex and
@@ -89,6 +90,7 @@ public abstract class ShaderProgram
 	public void bind()
 	{
 		glUseProgram(programID);
+		isBound = true;
 	}
 
 	/**
@@ -97,6 +99,17 @@ public abstract class ShaderProgram
 	public void unbind()
 	{
 		glUseProgram(0);
+		isBound = false;
+	}
+	
+	/**
+	 * Returns true if this shader is currently bound.
+	 * 
+	 * @return true if this shader is currently bound.
+	 */
+	public boolean isBound()
+	{
+		return isBound;
 	}
 
 	/**
