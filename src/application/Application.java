@@ -119,7 +119,7 @@ public abstract class Application implements Runnable
 				paused = false;
 			}
 		}
-		CameraSystem.move(camera);
+		CameraSystem.move();
 		if (!paused)
 		{
 			EntitySystem.updateEntities(dt);
