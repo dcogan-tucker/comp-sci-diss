@@ -54,15 +54,20 @@ public class Entity
 	/**
 	 * Removes the component of the corresponding class from this entity's component map.
 	 * 
-	 * @param <T> Type of class.
 	 * @param component The class of the component to remove.
 	 */
-	public <T extends Component> void removeComponent(Class<T> component)
+	public void removeComponent(Class<? extends Component> component)
 	{
 		components.remove(component);
 		Component.componentMap.get(component).remove(this);
 	}
 
+	/**
+	 * Returns true if the entity has a component of the given class type.
+	 * 
+	 * @param component The Class type of the component.
+	 * @return True if the entity contains a component of the given Class type.
+	 */
 	public boolean hasComponent(Class<? extends Component> component)
 	{
 		return components.get(component) != null ? true : false;
@@ -71,13 +76,13 @@ public class Entity
 	/**
 	 * Gets the component of the corresponding class from this entity's component map.
 	 * 
-	 * @param <T> Type of class.
 	 * @param component The class which extends component of the component to look for.
 	 * @throws IllegalArgumentException when the entity does not have contain the
 	 *                                  component of the given class.
 	 * @return The component corresponding to the given class.
 	 */
-	public <T extends Component> Component getComponent(Class<T> component)
+	@SuppressWarnings("unchecked")
+	public <T extends Component> T getComponent(Class<T> component)
 	{
 		Component c = components.get(component);
 		if (c == null)
@@ -85,7 +90,7 @@ public class Entity
 			throw new IllegalArgumentException(
 					"Entity does not contain the " + component.getSimpleName() + " component.");
 		}
-		return c;
+		return (T) c;
 	}
 	
 	/**
