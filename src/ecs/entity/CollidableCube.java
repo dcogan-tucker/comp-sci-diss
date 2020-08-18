@@ -18,7 +18,7 @@ public class CollidableCube extends MoveableCollidableGameObject
 	/**
 	 * The path to the texture png file.
 	 */
-	private static String texturePath = "src/resources/borderSquare.png";
+	private static String texturePath = "src/resources/wood.png";
 
 	/**
 	 * Mesh component of a cube.
