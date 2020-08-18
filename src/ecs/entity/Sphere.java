@@ -13,7 +13,7 @@ public class Sphere extends MoveableCollidableGameObject
 	/**
 	 * The path to the texture png file.
 	 */
-	private static String texturePath = "src/resources/borderSquare.png";
+	private static String texturePath = "src/resources/bball.png";
 
 	/**
 	 * Mesh component of a cube.
