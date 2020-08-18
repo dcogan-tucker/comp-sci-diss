@@ -48,9 +48,12 @@ public final class BroadPhaseDetector
 	 * 
 	 * @param entities The list of entities to have their bounding box updated.
 	 */
-	public static void updateBBoxes(List<Entity> entities)
+	public static void updateBBoxes(Entity... entities)
 	{
-		entities.forEach(e -> updateBBox(e));
+		for (Entity e : entities)
+		{
+			updateBBox(e);
+		}
 	}
 	
 	/**
