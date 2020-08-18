@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import org.joml.Vector3f;
 
 import ecs.component.Moveable;
+import ecs.component.Component;
 import ecs.component.Controllable;
 import ecs.component.State;
 import ecs.component.View;
@@ -22,6 +23,7 @@ public final class CameraSystem extends EngineSystem
 {
 	private static float mouseSens = 0.1f;
 	private static double oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;
+	private static Camera camera;
 
 	/**
 	 * Updates the velocity through key actions of a given camera, moving it in the
@@ -29,8 +31,9 @@ public final class CameraSystem extends EngineSystem
 	 * 
 	 * @param camera The camera to update.
 	 */
-	public static void move(Camera camera)
+	public static void move()
 	{
+		camera = (Camera) Component.componentMap.get(View.class).keySet().toArray()[0];
 		State state = camera.getComponent(State.class);
 		Moveable mov = camera.getComponent(Moveable.class);
 		Controllable control = camera.getComponent(Controllable.class);

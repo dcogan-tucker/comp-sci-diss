@@ -48,32 +48,32 @@ public final class CollisionSystem extends EngineSystem
 	public static void collisionDetection(float dt)
 	{
 		Map<Entity, Component> entitiesMap = Component.componentMap.get(Collidable.class);
-		List<Entity> entities = new ArrayList<Entity>();
-		// put all collidable entities into a list to loop through.
-		entitiesMap.forEach((entity, component) -> entities.add(entity));
-		
-		BroadPhaseDetector.updateBBoxes(entities);
-		for (int i = 0; i < entities.size(); i++)
+		Object[] entities = entitiesMap.keySet().toArray();
+		for (int i = 0; i < entities.length; i++)
 		{
-			for (int j = i + 1; j < entities.size(); j++)
+			for (int j = i + 1; j < entities.length; j++)
 			{
-				if (BroadPhaseDetector.areIntersecting(entities.get(i), entities.get(j)))
+				if (((Entity) entities[i]).getComponent(State.class).position
+						.distance(((Entity) entities[j]).getComponent(State.class).position) < 10)
 				{
-					Entity[] collidingPair = new Entity[2];
-					if (entities.get(i).hasComponent(Moveable.class))
+					BroadPhaseDetector.updateBBoxes((Entity) entities[i], (Entity) entities[j]);
+					if (BroadPhaseDetector.areIntersecting((Entity) entities[i], (Entity) entities[j]))
 					{
-						collidingPair[0] = entities.get(i);
-						collidingPair[1] = entities.get(j);
-					}
-					else if (entities.get(j).hasComponent(Moveable.class))
-					{
-						collidingPair[0] = entities.get(j);
-						collidingPair[1] = entities.get(i);
-					}
-					
-					if (collidingPair[0] != null)
-					{
-						broadPhaseCollisions.add(collidingPair);
+						Entity[] collidingPair = new Entity[2];
+						if (((Entity) entities[i]).hasComponent(Moveable.class))
+						{
+							collidingPair[0] = (Entity) entities[i];
+							collidingPair[1] = (Entity) entities[j];
+						}
+						else if (((Entity) entities[j]).hasComponent(Moveable.class))
+						{
+							collidingPair[0] = (Entity) entities[j];
+							collidingPair[1] = (Entity) entities[i];
+						}
+						if (collidingPair[0] != null)
+						{
+							broadPhaseCollisions.add(collidingPair);
+						}
 					}
 				}
 			}

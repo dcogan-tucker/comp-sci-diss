@@ -100,7 +100,6 @@ public final class RenderSystem extends EngineSystem
 					});
 				glDisableVertexAttribArray(0);
 			});
-		//shader.unbind();
 	}
 	
 	/**
