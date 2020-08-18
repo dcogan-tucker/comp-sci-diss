@@ -45,7 +45,7 @@ public class ConvexHull
 	 */
 	protected Vector3f generateSupportPoint(Vector3f direction)
 	{
-		State state = ((State) entity.getComponent(State.class));
+		State state = entity.getComponent(State.class);
 		Vector3f rot = new Vector3f();
 		if (!(entity instanceof Sphere))
 		{
@@ -90,7 +90,7 @@ public class ConvexHull
 	
 		Vector4f v4 = new Vector4f(start.toVector3f(), 1)
 				.mul(MatrixUtils.transformMatrix(state.position, 
-						rot, ((Weight) entity.getComponent(Weight.class)).scale));
+						rot, entity.getComponent(Weight.class).scale));
 		return new Vector3f(v4.x, v4.y, v4.z);
 	}
 	
@@ -99,7 +99,7 @@ public class ConvexHull
 	 */
 	private void processVertices()
 	{
-		float[] positions = ((Mesh) entity.getComponent(Mesh.class)).vertices;
+		float[] positions = entity.getComponent(Mesh.class).vertices;
 		
 		for (int i = 0; i < positions.length / 3; i++)
 		{
@@ -127,7 +127,7 @@ public class ConvexHull
 	 */
 	private void updateIndexData()
 	{
-		int[] indicies = ((Mesh) entity.getComponent(Mesh.class)).indices;
+		int[] indicies = entity.getComponent(Mesh.class).indices;
 		
 		this.indicies = new int[indicies.length];
 		for (int i = 0; i < indicies.length; i++)

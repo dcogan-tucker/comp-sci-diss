@@ -64,8 +64,8 @@ public final class NarrowPhaseDetector
 	 */
 	private static void init(Entity a, Entity b)
 	{
-		hullA = ((Collidable) a.getComponent(Collidable.class)).hull;
-		hullB = ((Collidable) b.getComponent(Collidable.class)).hull;
+		hullA = a.getComponent(Collidable.class).hull;
+		hullB = b.getComponent(Collidable.class).hull;
 		sim = new Simplex();
 		currentDir = new Vector3f(1, 0, 0);
 	}

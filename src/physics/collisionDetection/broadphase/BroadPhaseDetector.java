@@ -38,8 +38,8 @@ public final class BroadPhaseDetector
 	 */
 	public static boolean areIntersecting(Entity a, Entity b)
 	{
-		BoundingBox boxA = ((Collidable) a.getComponent(Collidable.class)).bBox;
-		BoundingBox boxB = ((Collidable) b.getComponent(Collidable.class)).bBox;
+		BoundingBox boxA = a.getComponent(Collidable.class).bBox;
+		BoundingBox boxB = b.getComponent(Collidable.class).bBox;
 		return boxA.isIntersecting(boxB);
 	}
 	
@@ -62,19 +62,19 @@ public final class BroadPhaseDetector
 	 */
 	private static void updateBBox(Entity entity)
 	{
-		State state = ((State) entity.getComponent(State.class));
-		float[] values = ((Mesh) entity.getComponent(Mesh.class)).vertices;
+		State state = entity.getComponent(State.class);
+		float[] values = entity.getComponent(Mesh.class).vertices;
 		float[] worldCoords = new float[values.length];
 		Vector3f[] vertices = new Vector3f[values.length / 3];
 		for (int i = 0; i < values.length / 3; i++)
 		{
 			vertices[i] = new Vector3f(values[3 * i], values[3 * i + 1], values[3 * i + 2]);
 			Vector4f v4 = new Vector4f(vertices[i], 1);
-			v4.mul(MatrixUtils.transformMatrix(state.position, state.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
+			v4.mul(MatrixUtils.transformMatrix(state.position, state.rotation, entity.getComponent(Weight.class).scale));
 			worldCoords[3 * i] = v4.x;
 			worldCoords[3 * i + 1] = v4.y;
 			worldCoords[3 * i + 2] = v4.z;
 		}
-		((Collidable) entity.getComponent(Collidable.class)).bBox.update(worldCoords);
+		entity.getComponent(Collidable.class).bBox.update(worldCoords);
 	}
 }

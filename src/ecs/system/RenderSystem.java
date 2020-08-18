@@ -54,7 +54,7 @@ public final class RenderSystem extends EngineSystem
 		MaterialSystem.create(Arrow.initMaterial());
 		MeshSystem.createAll();
 		camera = cam;
-		cameraState = ((State) camera.getComponent(State.class));
+		cameraState = camera.getComponent(State.class);
 		shader = s;
 		shader.bind();
 	}
@@ -124,7 +124,7 @@ public final class RenderSystem extends EngineSystem
 	 */
 	private static void drawEntity(Entity entity, Mesh mesh)
 	{
-		State entityState = ((State) entity.getComponent(State.class));
+		State entityState = entity.getComponent(State.class);
 		shader.setModelMatrix(MatrixUtils.transformMatrix(entityState.position, 
 				entityState.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
 		shader.setViewMatrix(MatrixUtils.viewMatrix(cameraState.position, cameraState.rotation));
@@ -137,8 +137,8 @@ public final class RenderSystem extends EngineSystem
 		if (arrows.size() != 0)
 		{
 			Arrow a = (Arrow) arrows.get(0);
-			Mesh mesh = ((Mesh) a.getComponent(Mesh.class));
-			Material material = ((Material) a.getComponent(Material.class));
+			Mesh mesh = a.getComponent(Mesh.class);
+			Material material = a.getComponent(Material.class);
 			if (!arrowInitialised)
 			{
 				MeshSystem.create(mesh, material);

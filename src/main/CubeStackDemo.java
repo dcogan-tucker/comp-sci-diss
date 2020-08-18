@@ -45,11 +45,11 @@ public class CubeStackDemo extends Application
 				new Vector3f(0, 0, 0), 
 				1, 1);
 		
-		((Weight) plane.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube1.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube2.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube3.getComponent(Weight.class)).restitution = 0.2f;
+		plane.getComponent(Weight.class).restitution = 0.2f;
+		cube.getComponent(Weight.class).restitution = 0.2f;
+		cube1.getComponent(Weight.class).restitution = 0.2f;
+		cube2.getComponent(Weight.class).restitution = 0.2f;
+		cube3.getComponent(Weight.class).restitution = 0.2f;
 	}
 
 	public static void main(String[] args)

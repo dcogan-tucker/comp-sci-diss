@@ -37,7 +37,7 @@ public class Sphere extends MoveableCollidableGameObject
 	private Sphere(Vector3f pos, Vector3f rot, float scale, float mass)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), mass);
-		Weight w = ((Weight) this.getComponent(Weight.class));
+		Weight w = this.getComponent(Weight.class);
 		w.inertia = (2.0f / 5) * mass * (39.5f * scale) * (39.5f * scale);
 		w.inverseInertia = 1.0f / w.inertia;
 	}

@@ -92,7 +92,7 @@ final class MeshSystem extends EngineSystem
 					eList.add(e);
 					if (e.hasComponent(Material.class))
 					{
-						map.put(((Material) e.getComponent(Material.class)), eList);
+						map.put(e.getComponent(Material.class), eList);
 					}
 					else
 					{
@@ -106,7 +106,7 @@ final class MeshSystem extends EngineSystem
 					Material mat;
 					if (e.hasComponent(Material.class))
 					{
-						mat = ((Material) e.getComponent(Material.class));
+						mat = (e.getComponent(Material.class));
 					}
 					else
 					{

@@ -31,9 +31,9 @@ public final class CameraSystem extends EngineSystem
 	 */
 	public static void move(Camera camera)
 	{
-		State state = ((State) camera.getComponent(State.class));
-		Moveable mov = ((Moveable) camera.getComponent(Moveable.class));
-		Controllable control = ((Controllable) camera.getComponent(Controllable.class));
+		State state = camera.getComponent(State.class);
+		Moveable mov = camera.getComponent(Moveable.class);
+		Controllable control = camera.getComponent(Controllable.class);
 
 		float x = (float) Math.sin(Math.toRadians(-state.rotation.y));
 		float z = (float) Math.cos(Math.toRadians(state.rotation.y));
@@ -84,10 +84,10 @@ public final class CameraSystem extends EngineSystem
 		if (Mouse.isPressed(GLFW_MOUSE_BUTTON_RIGHT))
 		{
 			state.rotation.add(new Vector3f(dy * mouseSens, dx * mouseSens, 0));
-			((View) camera.getComponent(View.class)).window.disableMouse(true);
+			camera.getComponent(View.class).window.disableMouse(true);
 		} else
 		{
-			((View) camera.getComponent(View.class)).window.disableMouse(false);
+			camera.getComponent(View.class).window.disableMouse(false);
 		}
 	}
 }

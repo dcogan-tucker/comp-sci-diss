@@ -30,10 +30,10 @@ public class SphereSlopeDemo extends Application
 				new Vector3f(-1.5f, 1f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				0.025f, 1);
-		((Weight) slope.getComponent(Weight.class)).restitution = 0.4f;
-		((Weight) sphere.getComponent(Weight.class)).restitution = 0.5f;
-		((Weight) slope.getComponent(Weight.class)).friction = 0.2f;
-		((Weight) sphere.getComponent(Weight.class)).friction = 0.2f;
+		slope.getComponent(Weight.class).restitution = 0.4f;
+		sphere.getComponent(Weight.class).restitution = 0.5f;
+		slope.getComponent(Weight.class).friction = 0.2f;
+		sphere.getComponent(Weight.class).friction = 0.2f;
 	}
 	
 	public static void main(String[] args)

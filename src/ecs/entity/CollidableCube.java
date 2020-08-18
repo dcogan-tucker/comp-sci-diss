@@ -42,7 +42,7 @@ public class CollidableCube extends MoveableCollidableGameObject
 	private CollidableCube(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), weight);
-		Weight w = ((Weight) this.getComponent(Weight.class));
+		Weight w =  this.getComponent(Weight.class);
 		w.inertia = (1.0f / 6) * weight * scale * scale;
 		w.inverseInertia = 1.0f / w.inertia;
 	}

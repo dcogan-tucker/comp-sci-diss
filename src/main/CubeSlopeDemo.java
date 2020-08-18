@@ -31,10 +31,10 @@ public class CubeSlopeDemo extends Application
 				new Vector3f(-1f, 1f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				0.8f, 1);
-		((Weight) slope.getComponent(Weight.class)).restitution = 0.3f;
-		((Weight) cube.getComponent(Weight.class)).restitution = 0.3f;
-		((Weight) slope.getComponent(Weight.class)).friction = 0.3f;
-		((Weight) cube.getComponent(Weight.class)).friction = 0.3f;
+		slope.getComponent(Weight.class).restitution = 0.3f;
+		cube.getComponent(Weight.class).restitution = 0.3f;
+		slope.getComponent(Weight.class).friction = 0.3f;
+		cube.getComponent(Weight.class).friction = 0.3f;
 	}
 	
 	public static void main(String[] args)

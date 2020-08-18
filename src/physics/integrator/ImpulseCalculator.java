@@ -40,16 +40,6 @@ public class ImpulseCalculator
 		average.worldPoint = data.contacts[0].worldPoint;
 		average.worldNormal = data.contacts[0].worldNormal;
 		average.penDepth = data.contacts[0].penDepth;
-//		for (ContactPoint contact : data.contacts)
-//		{
-//			average.worldNormal.add(contact.worldNormal);
-//			average.worldPoint.add(contact.worldPoint);
-//			average.penDepth += contact.penDepth;
-//		}
-//		
-//		average.worldNormal.normalize();
-//		average.worldPoint.div(4);
-//		average.penDepth /= 4;
 	}
 	
 	public static void calculate(Collision collision, float dt)
@@ -99,9 +89,9 @@ public class ImpulseCalculator
 			a = this.b;
 			b = this.a;
 		}
-		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
-		Weight weightA = ((Weight) a.getComponent(Weight.class));
-		Weight weightB = ((Weight) b.getComponent(Weight.class));
+		Moveable mov = a.getComponent(Moveable.class);
+		Weight weightA = a.getComponent(Weight.class);
+		Weight weightB = b.getComponent(Weight.class);
 		if (Math.abs(mov.momentum.length()) < 1E-2f)
 		{
 			mov.momentum.set(0);
@@ -136,14 +126,14 @@ public class ImpulseCalculator
 		{
 			resultant.negate();
 		}
-		((Moveable) a.getComponent(Moveable.class)).force.set(resultant);
+		mov.force.set(resultant);
 	}
 	
 	private void generateTorque(Entity a)
 	{
-		Moveable mov = ((Moveable) a.getComponent(Moveable.class));
-		State state = ((State) a.getComponent(State.class));
-		Weight weight = ((Weight) a.getComponent(Weight.class));
+		Moveable mov = a.getComponent(Moveable.class);
+		State state = a.getComponent(State.class);
+		Weight weight = a.getComponent(Weight.class);
 		Vector3f torqueDir = new Vector3f(average.worldNormal).cross(dirOfMotion);
 		Vector3f entityOrientation = new Vector3f(0, 1, 0)
 				.rotateX((float) Math.toRadians(state.rotation.x ))
@@ -177,9 +167,9 @@ public class ImpulseCalculator
 		}
 		if (!b.hasComponent(Moveable.class) && average.worldNormal.angle(new Vector3f(0, 1, 0)) > 0.1f)
 		{
-			State state = ((State) a.getComponent(State.class));
-			Weight weightA = ((Weight) a.getComponent(Weight.class));
-			Weight weightB = ((Weight) b.getComponent(Weight.class));
+			State state = a.getComponent(State.class);
+			Weight weightA = a.getComponent(Weight.class);
+			Weight weightB = b.getComponent(Weight.class);
 			Vector3f resultant = new Vector3f(average.worldNormal).normalize().mul(weightA.mass * 9.81f).div((float) (weightA.friction * Math.sin(Math.toRadians(state.rotation.length()))  + Math.cos(Math.toRadians(state.rotation.length()))));
 			Vector3f rotationAxis = new Vector3f(state.rotation).normalize();			
 			Vector3f frictionDir = new Vector3f(resultant).cross(rotationAxis).normalize();

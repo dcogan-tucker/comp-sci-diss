@@ -33,12 +33,12 @@ public class Main extends Application
 				new Vector3f(1, 2, -6), 
 				new Vector3f(-25, 0, 0),
 				0.8f, 1);
-		((Moveable) cube.getComponent(Moveable.class)).momentum.set(0, 0, -5);
+		cube.getComponent(Moveable.class).momentum.set(0, 0, -5);
 		Sphere sphere = Sphere.create(
 				new Vector3f(0, 2, -7.5f),
 				new Vector3f(0, 0, 0), 
 				0.02f, 1);
-		((Moveable) sphere.getComponent(Moveable.class)).momentum.set(-5, 0, 0);
+		sphere.getComponent(Moveable.class).momentum.set(-5, 0, 0);
 		CollidableCube cube2 = CollidableCube.create(
 				new Vector3f(-0.5f, 0.5f, -6f), 
 				new Vector3f(0, 0, 0), 
@@ -47,13 +47,13 @@ public class Main extends Application
 				new Vector3f(0.5f, 0.5f, -6f),
 				new Vector3f(0, 0, 0), 
 				0.02f, 1);
-		((Weight) plane.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) backWall.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) sideWall.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube.getComponent(Weight.class)).restitution = 0.2f;
-		((Weight) cube2.getComponent(Weight.class)).restitution = 0.1f;
-		((Weight) sphere.getComponent(Weight.class)).restitution = 0.5f;
-		((Weight) sphere2.getComponent(Weight.class)).restitution = 0.5f;
+		plane.getComponent(Weight.class).restitution = 0.2f;
+		backWall.getComponent(Weight.class).restitution = 0.2f;
+		sideWall.getComponent(Weight.class).restitution = 0.2f;
+		cube.getComponent(Weight.class).restitution = 0.2f;
+		cube2.getComponent(Weight.class).restitution = 0.1f;
+		sphere.getComponent(Weight.class).restitution = 0.5f;
+		sphere2.getComponent(Weight.class).restitution = 0.5f;
 	}
 
 	public static void main(String[] args)
