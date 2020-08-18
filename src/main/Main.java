@@ -53,7 +53,7 @@ public class Main extends Application
 		cube.getComponent(Weight.class).restitution = 0.2f;
 		cube2.getComponent(Weight.class).restitution = 0.1f;
 		sphere.getComponent(Weight.class).restitution = 0.5f;
-		sphere2.getComponent(Weight.class).restitution = 0.5f;
+		sphere2.getComponent(Weight.class).restitution = 0.8f;
 	}
 
 	public static void main(String[] args)
