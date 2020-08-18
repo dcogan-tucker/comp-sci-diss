@@ -105,7 +105,7 @@ public class ImpulseCalculator
 		{
 			average.worldNormal.negate();
 		}
-		else if (dirOfMotion.equals(new Vector3f(0, 1, 0)) || dirOfMotion.equals(new Vector3f(0, -1, 0)) && (Math.abs(dirOfMotion.dot(average.worldNormal)) < 0.71f))
+		else if (dirOfMotion.equals(new Vector3f(0, 1, 0)) || dirOfMotion.equals(new Vector3f(0, -1, 0)) && (Math.abs(dirOfMotion.dot(average.worldNormal)) < 0.55f))
 		{
 			average.worldNormal.set(dirOfMotion).negate();
 		}
