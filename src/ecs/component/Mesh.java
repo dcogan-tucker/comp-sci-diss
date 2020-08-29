@@ -1,6 +1,6 @@
 package ecs.component;
 
-import openGLObjects.Vao;
+import ecs.system.rendering.openGLObjects.Vao;
 
 /**
  * The mesh component of an entity. Holds information about the entity's

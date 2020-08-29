@@ -42,4 +42,11 @@ public class GameObject extends Entity
 		weight.scale = scale;
 		addComponent(weight);
 	}
+	
+	@Override
+	public String toString()
+	{
+		State state = this.getComponent(State.class);
+		return this.getClass().getSimpleName() + " (position: " + state.position + ", rotation: " + state.rotation + ").";
+	}
 }

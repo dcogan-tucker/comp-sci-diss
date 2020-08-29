@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import ecs.component.Component;
+import ecs.system.EngineSystem;
 
 /**
  * An entity is an object with a unique id containing a map of all it's components.
@@ -39,15 +40,15 @@ public class Entity
 			components.put(component.getClass(), component);
 		}
 		
-		if (Component.componentMap.get(component.getClass()) == null)
+		if (EngineSystem.getEntities(component.getClass()) == null)
 		{
 			HashMap<Entity, Component> ec = new HashMap<>();
 			ec.put(this, component);
-			Component.componentMap.put(component.getClass(), ec);
+			EngineSystem.updateComponentMap(component.getClass(), ec);
 		}
-		else if (Component.componentMap.get(component.getClass()).get(this) == null)
+		else if (EngineSystem.getEntities(component.getClass()).get(this) == null)
 		{
-			Component.componentMap.get(component.getClass()).put(this, component);
+			EngineSystem.getEntities(component.getClass()).put(this, component);
 		}
 	}
 
@@ -59,7 +60,7 @@ public class Entity
 	public void removeComponent(Class<? extends Component> component)
 	{
 		components.remove(component);
-		Component.componentMap.get(component).remove(this);
+		EngineSystem.getEntities(component).remove(this);
 	}
 
 	/**
