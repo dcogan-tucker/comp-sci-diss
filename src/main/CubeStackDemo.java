@@ -4,14 +4,12 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import application.Application;
-import ecs.component.Moveable;
 import ecs.component.Weight;
 import ecs.entity.Camera;
-import ecs.entity.CollidableCube;
-import ecs.entity.Plane;
-import ecs.entity.Sphere;
+import ecs.entity.MoveableCollidableBox;
 import io.output.DisplayManager;
 import io.output.Window;
+import ecs.entity.CollidablePlane;
 
 public class CubeStackDemo extends Application
 {
@@ -24,23 +22,23 @@ public class CubeStackDemo extends Application
 	}
 
 	@Override
-	protected void scene(Camera camera)
+	protected void initScene(Camera camera)
 	{
-		Plane plane = Plane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, 0), new Vector2f(5, 5));
+		CollidablePlane plane = CollidablePlane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, 0), new Vector2f(5, 5));
 		
-		CollidableCube cube = CollidableCube.create(
+		MoveableCollidableBox cube = MoveableCollidableBox.create(
 				new Vector3f(0f, 0f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
-		CollidableCube cube1 = CollidableCube.create(
+		MoveableCollidableBox cube1 = MoveableCollidableBox.create(
 				new Vector3f(0, 2f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
-		CollidableCube cube2 = CollidableCube.create(
+		MoveableCollidableBox cube2 = MoveableCollidableBox.create(
 				new Vector3f(0, 4f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
-		CollidableCube cube3 = CollidableCube.create(
+		MoveableCollidableBox cube3 = MoveableCollidableBox.create(
 				new Vector3f(0, 6f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				1, 1);
@@ -50,6 +48,12 @@ public class CubeStackDemo extends Application
 		cube1.getComponent(Weight.class).restitution = 0.2f;
 		cube2.getComponent(Weight.class).restitution = 0.2f;
 		cube3.getComponent(Weight.class).restitution = 0.2f;
+	}
+	
+	@Override
+	protected void updateScene(double dt)
+	{
+		
 	}
 
 	public static void main(String[] args)

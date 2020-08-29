@@ -6,9 +6,8 @@ import org.joml.Vector3f;
 import application.Application;
 import ecs.component.Weight;
 import ecs.entity.Camera;
-import ecs.entity.CollidableCube;
-import ecs.entity.Plane;
-import ecs.entity.Sphere;
+import ecs.entity.CollidablePlane;
+import ecs.entity.MoveableCollidableBall;
 import io.output.DisplayManager;
 import io.output.Window;
 
@@ -23,10 +22,10 @@ public class SphereSlopeDemo extends Application
 	}
 
 	@Override
-	protected void scene(Camera camera)
+	protected void initScene(Camera camera)
 	{
-		Plane slope = Plane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -30), new Vector2f(5, 5));		
-		Sphere sphere = Sphere.create(
+		CollidablePlane slope = CollidablePlane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -30), new Vector2f(5, 5));		
+		MoveableCollidableBall sphere = MoveableCollidableBall.create(
 				new Vector3f(-1.5f, 1f, -7.5f), 
 				new Vector3f(0, 0, 0), 
 				0.025f, 1);
@@ -34,6 +33,12 @@ public class SphereSlopeDemo extends Application
 		sphere.getComponent(Weight.class).restitution = 0.8f;
 		slope.getComponent(Weight.class).friction = 0.2f;
 		sphere.getComponent(Weight.class).friction = 0.2f;
+	}
+	
+	@Override
+	protected void updateScene(double dt)
+	{
+		
 	}
 	
 	public static void main(String[] args)

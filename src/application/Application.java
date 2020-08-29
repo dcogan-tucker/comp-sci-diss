@@ -3,17 +3,18 @@ package application;
 import static org.lwjgl.glfw.GLFW.*;
 
 import ecs.entity.Camera;
-import ecs.system.CameraSystem;
-import ecs.system.CollisionSystem;
-import ecs.system.EntitySystem;
-import ecs.system.RenderSystem;
+import ecs.system.physics.collision.CollisionSystem;
+import ecs.system.physics.dynamics.EntitySystem;
+import ecs.system.rendering.RenderSystem;
+import ecs.system.rendering.shaders.EntityShader;
+import ecs.system.view.CameraSystem;
 import io.input.Keyboard;
 import io.output.Window;
-import shaders.EntityShader;
 
 /**
  * Application class to be extended by the main class. Provides abstract methods to
- * initialise the window settings and the content of the scene.
+ * initialise the window settings, the content of the scene and to update the scene
+ * each frame.
  * 
  * @author Dominic Cogan-Tucker
  *
@@ -24,25 +25,25 @@ public abstract class Application implements Runnable
 	private Window window;
 	private EntityShader shader;
 	private Camera camera;
-	public boolean paused = false;
+	private boolean paused = false;
 	
-	public static double t = 0;
 	private final double dt = 1.0 / 144;
 	private double currentTime;
 	private double accumulator = 0;
 	private double newTime;
 	private double frameTime;
+	
+	private RenderSystem renderer;
+	private CameraSystem camSystem;
+	private EntitySystem entitySystem = new EntitySystem(dt);
+	private CollisionSystem collisionSystem = new CollisionSystem(dt);
 
-	/**
-	 * 
-	 */
 	@Override
 	public void run()
 	{
 		init();
-		scene(camera);
+		initScene(camera);
 		createScene();
-		
 		currentTime = (double) System.currentTimeMillis() / 1000;
 		
 		while (!window.shouldClose() && !Keyboard.isPressed(GLFW_KEY_ESCAPE))
@@ -55,7 +56,6 @@ public abstract class Application implements Runnable
 			{
 				update(dt);
 				accumulator -= dt;
-				t += dt;
 			}
 			render();
 		}
@@ -66,10 +66,11 @@ public abstract class Application implements Runnable
 	 * Starts the physics engine application. To be called in the main method of the
 	 * application's main class.
 	 */
-	public void start()
+	protected Application start()
 	{
 		game = new Thread(this, "Application");
 		game.start();
+		return this;
 	}
 	
 	/**
@@ -83,24 +84,32 @@ public abstract class Application implements Runnable
 		shader = new EntityShader();
 		window.create();
 		shader.create();
+		renderer = new RenderSystem(camera, shader);
+		camSystem = new CameraSystem(camera);
 	}
 	
 	/**
-	 * Define the window settings for the application.
+	 * Method for the user to define the window settings for 
+	 * the application.
+	 * 
+	 * @param window The window for the application.
 	 */
 	protected abstract void windowSettings(Window window);
 	
 	/**
-	 * Define the content of the scene.
+	 * Method for the user to define the initial contents of the
+	 * scene.
+	 * 
+	 * @param camera The camera to view the scene.
 	 */
-	protected abstract void scene(Camera camera);
+	protected abstract void initScene(Camera camera);
 	
 	/**
 	 * Initialises the scene.
 	 */
 	private void createScene()
 	{
-		RenderSystem.initialise(camera, shader);
+		renderer.initialise();
 	}
 
 	/**
@@ -119,14 +128,23 @@ public abstract class Application implements Runnable
 				paused = false;
 			}
 		}
-		CameraSystem.move();
+		camSystem.update();
 		if (!paused)
 		{
-			EntitySystem.updateEntities(dt);
-			CollisionSystem.collisionDetection((float) dt);
-			
+			entitySystem.update();
+			collisionSystem.update();
 		}
+		updateScene(dt);
 	}
+	
+	/**
+	 * Method for the user to define how the scene updates each
+	 * frame.
+	 * 
+	 * @param dt The time taken for a frame.
+	 */
+	protected abstract void updateScene(double dt);
+
 	
 	/**
 	 * Render the scene to the window. To be called every frame.
@@ -134,7 +152,7 @@ public abstract class Application implements Runnable
 	private void render()
 	{
 		window.update();
-		RenderSystem.renderMeshes();
+		renderer.update();
 		window.render();
 	}
 	
@@ -144,7 +162,7 @@ public abstract class Application implements Runnable
 	private void close()
 	{
 		window.destroy();
-		RenderSystem.close();
+		renderer.close();
 		shader.close();
 	}
 }
