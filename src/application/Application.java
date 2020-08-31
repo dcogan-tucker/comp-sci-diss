@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import ecs.entity.Camera;
 import ecs.system.physics.collision.CollisionSystem;
-import ecs.system.physics.dynamics.EntitySystem;
+import ecs.system.physics.dynamics.DynamicsSystem;
 import ecs.system.rendering.RenderSystem;
 import ecs.system.rendering.shaders.EntityShader;
 import ecs.system.view.CameraSystem;
@@ -12,7 +12,7 @@ import io.input.Keyboard;
 import io.output.Window;
 
 /**
- * Application class to be extended by the main class. Provides abstract methods to
+ * Application class to be extended by any program to use this engine. Provides abstract methods to
  * initialise the window settings, the content of the scene and to update the scene
  * each frame.
  * 
@@ -35,7 +35,7 @@ public abstract class Application implements Runnable
 	
 	private RenderSystem renderer;
 	private CameraSystem camSystem;
-	private EntitySystem entitySystem = new EntitySystem(dt);
+	private DynamicsSystem dynamicsSystem = new DynamicsSystem(dt);
 	private CollisionSystem collisionSystem = new CollisionSystem(dt);
 
 	@Override
@@ -46,6 +46,7 @@ public abstract class Application implements Runnable
 		createScene();
 		currentTime = (double) System.currentTimeMillis() / 1000;
 		
+		// Loops while display window is open. Escape key closes the window.
 		while (!window.shouldClose() && !Keyboard.isPressed(GLFW_KEY_ESCAPE))
 		{
 			newTime = (double) System.currentTimeMillis() / 1000;
@@ -64,7 +65,7 @@ public abstract class Application implements Runnable
 
 	/**
 	 * Starts the physics engine application. To be called in the main method of the
-	 * application's main class.
+	 * class extending this class.
 	 */
 	protected Application start()
 	{
@@ -74,7 +75,7 @@ public abstract class Application implements Runnable
 	}
 	
 	/**
-	 * Initialises the application.
+	 * Initialises the window, camera view and rendering system for the application.
 	 */
 	private void init()
 	{
@@ -105,18 +106,27 @@ public abstract class Application implements Runnable
 	protected abstract void initScene(Camera camera);
 	
 	/**
-	 * Initialises the scene.
+	 * Initialises the rendering of the scene.
 	 */
 	private void createScene()
 	{
 		renderer.initialise();
 	}
+	
+	/**
+	 * Method for the user to define how the scene updates each
+	 * frame.
+	 * 
+	 * @param dt The time taken for a frame.
+	 */
+	protected abstract void updateScene(double dt);
 
 	/**
 	 * Update the application's systems. To be called every frame.
 	 */
 	private void update(double dt)
 	{
+		// Checks if system should be paused/unpaused.
 		if (Keyboard.isPressed(GLFW_KEY_P))
 		{
 			if (!paused)
@@ -129,25 +139,19 @@ public abstract class Application implements Runnable
 			}
 		}
 		camSystem.update();
+		// Proceed with updates if the application isn't paused.
 		if (!paused)
 		{
-			entitySystem.update();
+			dynamicsSystem.update();
 			collisionSystem.update();
+			updateScene(dt);
 		}
-		updateScene(dt);
 	}
-	
-	/**
-	 * Method for the user to define how the scene updates each
-	 * frame.
-	 * 
-	 * @param dt The time taken for a frame.
-	 */
-	protected abstract void updateScene(double dt);
 
 	
 	/**
-	 * Render the scene to the window. To be called every frame.
+	 * Updates the window and the rendering process then render the 
+	 * scene to the window. To be called every frame.
 	 */
 	private void render()
 	{
@@ -157,7 +161,8 @@ public abstract class Application implements Runnable
 	}
 	
 	/**
-	 * Close the application.
+	 * Close the application. Destroying the window, closing the render
+	 * system.
 	 */
 	private void close()
 	{

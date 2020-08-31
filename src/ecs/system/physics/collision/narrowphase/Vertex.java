@@ -6,7 +6,9 @@ import java.util.List;
 import org.joml.Vector3f;
 
 /**
- * A class containing the 
+ * Vertex class, containing the x, y, and z coordiantes of the vertex
+ * and a list of any adjacent vertices.
+ * 
  * @author Dominic Cogan-Tucker
  *
  */

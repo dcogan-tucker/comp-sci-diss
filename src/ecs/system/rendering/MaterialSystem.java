@@ -23,14 +23,23 @@ import ecs.system.EngineSystem;
  */
 final class MaterialSystem extends EngineSystem
 {
+	/**
+	 * A set of all the used materials.
+	 */
 	private static Set<Material> materials = new HashSet<Material>();
 	
+	/**
+	 * Creates all entity materials.
+	 */
 	@Override
 	public void initialise()
 	{
 		createAll();
 	}
 	
+	/**
+	 * Destroys all entity materials.
+	 */
 	@Override
 	public void close()
 	{

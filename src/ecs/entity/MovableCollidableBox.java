@@ -2,9 +2,9 @@ package ecs.entity;
 
 import org.joml.Vector3f;
 
+import ecs.component.Mass;
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Weight;
 import utils.FileUtils;
 
 /**
@@ -13,7 +13,7 @@ import utils.FileUtils;
  * @author Dominic Cogan-Tucker
  *
  */
-public class MoveableCollidableBox extends MoveableCollidableGameObject
+public class MovableCollidableBox extends MovableCollidableGameObject
 {
 	/**
 	 * The path to the texture png file.
@@ -39,12 +39,12 @@ public class MoveableCollidableBox extends MoveableCollidableGameObject
 	 * @param scale The scale of the cube.
 	 * @param weight The weight of the cube.
 	 */
-	private MoveableCollidableBox(Vector3f pos, Vector3f rot, float scale, float weight)
+	private MovableCollidableBox(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), weight);
-		Weight w =  this.getComponent(Weight.class);
-		w.inertia = (1.0f / 6) * weight * scale * scale;
-		w.inverseInertia = 1.0f / w.inertia;
+		Mass m =  this.getComponent(Mass.class);
+		m.inertia = (1.0f / 6) * weight * scale * scale;
+		m.inverseInertia = 1.0f / m.inertia;
 	}
 
 	/**
@@ -58,9 +58,9 @@ public class MoveableCollidableBox extends MoveableCollidableGameObject
 	 * @param weight The weight of the cube.
 	 * @return A CollidableCube with the given parameters.
 	 */
-	public static MoveableCollidableBox create(Vector3f pos, Vector3f rot, float scale, float weight)
+	public static MovableCollidableBox create(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		material.texturePath = texturePath;
-		return new MoveableCollidableBox(pos, rot, scale, weight);
+		return new MovableCollidableBox(pos, rot, scale, weight);
 	}
 }

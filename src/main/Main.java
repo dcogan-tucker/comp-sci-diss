@@ -6,11 +6,11 @@ import org.joml.Vector3f;
 import application.Application;
 import ecs.component.*;
 import ecs.entity.Camera;
-import ecs.entity.MoveableCollidableBox;
+import ecs.entity.MovableCollidableBox;
 import io.output.DisplayManager;
 import io.output.Window;
 import ecs.entity.CollidablePlane;
-import ecs.entity.MoveableCollidableBall;
+import ecs.entity.MovableCollidableBall;
 
 public class Main extends Application
 {
@@ -28,31 +28,31 @@ public class Main extends Application
 		CollidablePlane plane = CollidablePlane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, 0), new Vector2f(5, 5));
 		CollidablePlane backWall = CollidablePlane.create(new Vector3f(0, 0, -10.1f), new Vector3f(90, 0, 0), new Vector2f(5, 5));
 		CollidablePlane sideWall = CollidablePlane.create(new Vector3f(-2.6f, 0, -7.5f), new Vector3f(-90, 0, 90), new Vector2f(5, 5));
-		MoveableCollidableBox cube = MoveableCollidableBox.create(
+		MovableCollidableBox cube = MovableCollidableBox.create(
 				new Vector3f(1, 2, -6), 
 				new Vector3f(-25, 0, 0),
 				0.8f, 1);
-		cube.getComponent(Moveable.class).momentum.set(0, 0, -5);
-		MoveableCollidableBall sphere = MoveableCollidableBall.create(
+		cube.getComponent(Movable.class).momentum.set(0, 0, -5);
+		MovableCollidableBall sphere = MovableCollidableBall.create(
 				new Vector3f(0, 2, -7.5f),
 				new Vector3f(0, 0, 0), 
 				0.02f, 1);
-		sphere.getComponent(Moveable.class).momentum.set(-5, 0, 0);
-		MoveableCollidableBox cube2 = MoveableCollidableBox.create(
+		sphere.getComponent(Movable.class).momentum.set(-5, 0, 0);
+		MovableCollidableBox cube2 = MovableCollidableBox.create(
 				new Vector3f(-0.5f, 0.5f, -6f), 
 				new Vector3f(0, 0, 0), 
 				0.8f, 1);
-		MoveableCollidableBall sphere2 = MoveableCollidableBall.create(
+		MovableCollidableBall sphere2 = MovableCollidableBall.create(
 				new Vector3f(0.5f, 0.5f, -6f),
 				new Vector3f(0, 0, 0), 
 				0.02f, 1);
-		plane.getComponent(Weight.class).restitution = 0.2f;
-		backWall.getComponent(Weight.class).restitution = 0.2f;
-		sideWall.getComponent(Weight.class).restitution = 0.2f;
-		cube.getComponent(Weight.class).restitution = 0.2f;
-		cube2.getComponent(Weight.class).restitution = 0.1f;
-		sphere.getComponent(Weight.class).restitution = 0.5f;
-		sphere2.getComponent(Weight.class).restitution = 0.8f;
+		plane.getComponent(Collidable.class).restitution = 0.2f;
+		backWall.getComponent(Collidable.class).restitution = 0.2f;
+		sideWall.getComponent(Collidable.class).restitution = 0.2f;
+		cube.getComponent(Collidable.class).restitution = 0.2f;
+		cube2.getComponent(Collidable.class).restitution = 0.1f;
+		sphere.getComponent(Collidable.class).restitution = 0.5f;
+		sphere2.getComponent(Collidable.class).restitution = 0.8f;
 	}
 	
 	@Override

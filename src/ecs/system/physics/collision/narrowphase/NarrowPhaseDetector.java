@@ -55,11 +55,11 @@ public final class NarrowPhaseDetector
 	private static void init(Collision col)
 	{
 		collision = col;
-		hullA = collision.a.getComponent(Collidable.class).hull;
-		hullB = collision.b.getComponent(Collidable.class).hull;
-		if (collision.sim == null)
+		hullA = collision.getEntityA().getComponent(Collidable.class).hull;
+		hullB = collision.getEntityB().getComponent(Collidable.class).hull;
+		if (collision.getSimplex() == null)
 		{
-			collision.sim = new Simplex();
+			collision.setSimplex(new Simplex());
 		}
 		currentDir = new Vector3f(1, 0, 0);
 	}
@@ -79,8 +79,8 @@ public final class NarrowPhaseDetector
 			currentDir = new Vector3f(0, 1, 0);
 			sup = minkowskiDifference();
 		}
-		collision.sim.push(sup);
-		currentDir = new Vector3f(collision.sim.a.v).negate();
+		collision.getSimplex().push(sup);
+		currentDir = new Vector3f(collision.getSimplex().a.v).negate();
 		currentIteration = 0;
 		
 		while (true)
@@ -91,34 +91,34 @@ public final class NarrowPhaseDetector
 				return false;
 			}
 			
-			collision.sim.push(newSup);
+			collision.getSimplex().push(newSup);
 			
-			if (collision.sim.getNumberOfPoints() == 2)
+			if (collision.getSimplex().getNumberOfPoints() == 2)
 			{
-				Vector3f ab = new Vector3f(collision.sim.b.v).sub(collision.sim.a.v);
-				Vector3f ao = new Vector3f(collision.sim.a.v).negate();
+				Vector3f ab = new Vector3f(collision.getSimplex().b.v).sub(collision.getSimplex().a.v);
+				Vector3f ao = new Vector3f(collision.getSimplex().a.v).negate();
 				
 				currentDir = new Vector3f(ab).cross(ao).cross(ab);
 				continue;
 			}
 			
-			if (collision.sim.getNumberOfPoints() == 3)
+			if (collision.getSimplex().getNumberOfPoints() == 3)
 			{
-				Vector3f ab = new Vector3f(collision.sim.b.v).sub(collision.sim.a.v);
-				Vector3f ac = new Vector3f(collision.sim.c.v).sub(collision.sim.a.v);
-				Vector3f ao = new Vector3f(collision.sim.a.v).negate();
+				Vector3f ab = new Vector3f(collision.getSimplex().b.v).sub(collision.getSimplex().a.v);
+				Vector3f ac = new Vector3f(collision.getSimplex().c.v).sub(collision.getSimplex().a.v);
+				Vector3f ao = new Vector3f(collision.getSimplex().a.v).negate();
 				Vector3f abc = new Vector3f(ab).cross(ac);
 				
 				if (simplexTest(new Vector3f(ab).cross(abc)))
 				{
-					collision.sim.set(collision.sim.a, collision.sim.b);
+					collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().b);
 					currentDir = new Vector3f(ab).cross(ao).cross(ab);
 					continue;
 				}
 				
 				if (simplexTest(new Vector3f(abc).cross(ac)))
 				{
-					collision.sim.set(collision.sim.a, collision.sim.c);
+					collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().c);
 					currentDir = new Vector3f(ac).cross(ao).cross(ac);
 					continue;
 				}
@@ -129,15 +129,15 @@ public final class NarrowPhaseDetector
 					continue;
 				}
 				
-				collision.sim.set(collision.sim.a, collision.sim.c, collision.sim.b);
+				collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().c, collision.getSimplex().b);
 				currentDir = new Vector3f(abc).negate();
 				continue;
 			}
 			
-			if (collision.sim.getNumberOfPoints() == 4)
+			if (collision.getSimplex().getNumberOfPoints() == 4)
 			{
-				Vector3f ab = new Vector3f(collision.sim.b.v).sub(collision.sim.a.v);
-				Vector3f ac = new Vector3f(collision.sim.c.v).sub(collision.sim.a.v);
+				Vector3f ab = new Vector3f(collision.getSimplex().b.v).sub(collision.getSimplex().a.v);
+				Vector3f ac = new Vector3f(collision.getSimplex().c.v).sub(collision.getSimplex().a.v);
 				
 				if (simplexTest(new Vector3f(ab).cross(ac)))
 				{
@@ -145,18 +145,18 @@ public final class NarrowPhaseDetector
 					continue;
 				}
 				
-				Vector3f ad = new Vector3f(collision.sim.d.v).sub(collision.sim.a.v);
+				Vector3f ad = new Vector3f(collision.getSimplex().d.v).sub(collision.getSimplex().a.v);
 				
 				if (simplexTest(new Vector3f(ac).cross(ad)))
 				{
-					collision.sim.set(collision.sim.a, collision.sim.c, collision.sim.d);
+					collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().c, collision.getSimplex().d);
 					faceCheck();
 					continue;
 				}
 				
 				if (simplexTest(new Vector3f(ad).cross(ab)))
 				{
-					collision.sim.set(collision.sim.a, collision.sim.d, collision.sim.b);
+					collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().d, collision.getSimplex().b);
 					faceCheck();
 					continue;
 				}
@@ -172,24 +172,24 @@ public final class NarrowPhaseDetector
 	 */
 	private static void faceCheck()
 	{
-		Vector3f ab = new Vector3f(collision.sim.b.v).sub(collision.sim.a.v);
-		Vector3f ac = new Vector3f(collision.sim.c.v).sub(collision.sim.a.v);
-		Vector3f ao = new Vector3f(collision.sim.a.v).negate();
+		Vector3f ab = new Vector3f(collision.getSimplex().b.v).sub(collision.getSimplex().a.v);
+		Vector3f ac = new Vector3f(collision.getSimplex().c.v).sub(collision.getSimplex().a.v);
+		Vector3f ao = new Vector3f(collision.getSimplex().a.v).negate();
 		Vector3f abc = new Vector3f(ab).cross(ac);
 		
 		if (simplexTest(new Vector3f(ab).cross(abc)))
 		{
-			collision.sim.set(collision.sim.a, collision.sim.b);
+			collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().b);
 			currentDir = new Vector3f(ab).cross(ao).cross(ab);
 		}
 		else if (simplexTest(new Vector3f(abc).cross(ac)))
 		{
-			collision.sim.set(collision.sim.a, collision.sim.c);
+			collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().c);
 			currentDir = new Vector3f(ac).cross(ao).cross(ac);
 		}
 		else
 		{
-			collision.sim.set(collision.sim.a, collision.sim.b, collision.sim.c);
+			collision.getSimplex().set(collision.getSimplex().a, collision.getSimplex().b, collision.getSimplex().c);
 			currentDir = new Vector3f(abc);
 		}
 	}
@@ -204,7 +204,7 @@ public final class NarrowPhaseDetector
 	 */
 	public static boolean simplexTest(Vector3f v)
 	{
-		return new Vector3f(v).dot(new Vector3f(collision.sim.a.v).negate()) > 0;
+		return new Vector3f(v).dot(new Vector3f(collision.getSimplex().a.v).negate()) > 0;
 	}
 	
 	/**

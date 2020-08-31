@@ -3,12 +3,14 @@ package ecs.component;
 import org.joml.Vector3f;
 
 /**
- * Component that holds an entity's momentum and velocity
+ * Component that holds the information regarding an entity's dynamics,
+ * including forces being applied, and the linear and rotational movement,
+ * as well as the previous movable component for the entity.
  * 
  * @author Dominic Cogan-Tucker
  *
  */
-public class Moveable extends Component
+public class Movable extends Component
 {
 	
 	/**
@@ -42,8 +44,8 @@ public class Moveable extends Component
 	public Vector3f angVelocity = new Vector3f();
 	
 	/**
-	 * The value of the moveable component from the 
+	 * The value of the movable component from the 
 	 * previous time step.
 	 */
-	public Moveable previous;
+	public Movable previous;
 }

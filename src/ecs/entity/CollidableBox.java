@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Weight;
+import ecs.component.Mass;
 import utils.FileUtils;
 
 /**
@@ -43,7 +43,7 @@ public class CollidableBox extends CollidableGameObject
 	private CollidableBox(Vector3f pos, Vector3f rot, float scale, float weight)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), weight);
-		Weight w =  this.getComponent(Weight.class);
+		Mass w =  this.getComponent(Mass.class);
 		w.inertia = (1.0f / 6) * weight * scale * scale;
 		w.inverseInertia = 1.0f / w.inertia;
 	}

@@ -20,12 +20,18 @@ import ecs.system.rendering.openGLObjects.Vao;
  */
 final class MeshSystem extends EngineSystem
 {	
+	/**
+	 * Creates all entity meshes.
+	 */
 	@Override
 	public void initialise()
 	{	
 		createAll();
 	}
 	
+	/**
+	 * Destroy all entity meshes.
+	 */
 	@Override
 	public void close()
 	{

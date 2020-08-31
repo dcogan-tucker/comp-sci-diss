@@ -9,10 +9,21 @@ import org.joml.Vector3f;
  * @author Dominic Cogan-Tucker
  *
  */
-public class SupportPoint{
-
+public class SupportPoint
+{
+	/**
+	 * The Minkowski difference value.
+	 */
 	public Vector3f v;
+	
+	/**
+	 * Support point of entity a.
+	 */
 	public Vector3f a;
+	
+	/**
+	 * Support point of entity b.
+	 */
 	public Vector3f b;
 	
 	/**

@@ -3,7 +3,7 @@ package ecs.entity;
 import org.joml.Vector3f;
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Moveable;
+import ecs.component.Movable;
 import ecs.system.physics.collision.response.ImpulseCalculator;
 
 /**
@@ -12,7 +12,7 @@ import ecs.system.physics.collision.response.ImpulseCalculator;
  * @author Dominic Cogan-Tucker
  *
  */
-public class MoveableCollidableGameObject extends CollidableGameObject
+public class MovableCollidableGameObject extends CollidableGameObject
 {
 
 	/**
@@ -25,10 +25,10 @@ public class MoveableCollidableGameObject extends CollidableGameObject
 	 * @param rot The rotation of the entity.
 	 * @param scale The scale of the entity.
 	 */
-	public MoveableCollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float mass)
+	public MovableCollidableGameObject(Mesh mesh, Material material, Vector3f pos, Vector3f rot, Vector3f scale, float mass)
 	{
 		super(mesh, material, pos, rot, scale, mass);
-		Moveable moveableComponent = new Moveable();
+		Movable moveableComponent = new Movable();
 		float gravity = - ImpulseCalculator.GRAVITAIONAL_ACCELERATION * mass;
 		moveableComponent.force = new Vector3f(0, gravity, 0);
 		addComponent(moveableComponent);

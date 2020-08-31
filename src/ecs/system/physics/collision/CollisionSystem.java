@@ -9,7 +9,7 @@ import ecs.component.State;
 import ecs.entity.Entity;
 import ecs.system.EngineSystem;
 import ecs.system.physics.collision.broadphase.BroadPhaseDetector;
-import ecs.system.physics.collision.contactGeneration.CollisionResolver;
+import ecs.system.physics.collision.contactGeneration.ContactPointGenerator;
 import ecs.system.physics.collision.narrowphase.NarrowPhaseDetector;
 import ecs.system.physics.collision.response.ImpulseCalculator;
 import ecs.system.physics.dynamics.EulerIntegrator;
@@ -60,11 +60,17 @@ public final class CollisionSystem extends EngineSystem
 		for (Iterator<Collision> i = collisions.iterator(); i.hasNext();)
 		{
 			Collision col = i.next();
-			CollisionResolver cr = new CollisionResolver(col.sim);
-			if (cr.generateCollisionData())
+			ContactPointGenerator cpg = new ContactPointGenerator(col.sim);
+			if (cpg.generateCollisionData())
 			{
 				EulerIntegrator.stepBack(col.a, col.b);
-				col.contact = cr.getContactPoint();
+				try
+				{
+					col.contact = cpg.getContactPoint();
+				} catch (Exception e)
+				{	
+					e.printStackTrace();
+				}
 				ImpulseCalculator.calculate(col, dt);
 			}
 			else

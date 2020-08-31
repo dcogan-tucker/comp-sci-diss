@@ -3,7 +3,7 @@ package ecs.entity;
 import org.joml.Vector3f;
 
 import ecs.component.Controllable;
-import ecs.component.Moveable;
+import ecs.component.Movable;
 import ecs.component.State;
 import ecs.component.View;
 import io.output.Window;
@@ -29,7 +29,7 @@ public class Camera extends Entity
 		// Create and attach a position component.
 		setPositionComponent(new Vector3f(), new Vector3f());
 		// Create and attach a movable component.
-		setMoveableComponent();
+		setMovableComponent();
 		// Create and attach a controllable component.
 		setControllableComponent();
 		// Create and attach the view component.
@@ -50,7 +50,7 @@ public class Camera extends Entity
 		// Create and attach a position component
 		setPositionComponent(pos, rot);
 		// Create and attach a movable component
-		setMoveableComponent();
+		setMovableComponent();
 		// Create and attach the view component.
 		setViewComponent(window);
 	}
@@ -83,9 +83,9 @@ public class Camera extends Entity
 	 * Sets and adds the movable component to this camera. Initially velocity and
 	 * acceleration set to zero.
 	 */
-	private void setMoveableComponent()
+	private void setMovableComponent()
 	{
-		Moveable moveableComp = new Moveable();
+		Movable moveableComp = new Movable();
 		moveableComp.force = new Vector3f();
 		addComponent(moveableComp);
 	}

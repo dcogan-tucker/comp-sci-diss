@@ -4,10 +4,10 @@ import org.joml.Vector3f;
 
 import ecs.component.Material;
 import ecs.component.Mesh;
-import ecs.component.Weight;
+import ecs.component.Mass;
 import utils.FileUtils;
 
-public class MoveableCollidableBall extends MoveableCollidableGameObject
+public class MovableCollidableBall extends MovableCollidableGameObject
 {
 
 	/**
@@ -34,12 +34,12 @@ public class MoveableCollidableBall extends MoveableCollidableGameObject
 	 * @param scale The scale of the sphere.
 	 * @param weight The weight of the sphere.
 	 */
-	private MoveableCollidableBall(Vector3f pos, Vector3f rot, float scale, float mass)
+	private MovableCollidableBall(Vector3f pos, Vector3f rot, float scale, float mass)
 	{
 		super(mesh, material, pos, rot, new Vector3f(scale), mass);
-		Weight w = this.getComponent(Weight.class);
-		w.inertia = (2.0f / 5) * mass * (39.5f * scale) * (39.5f * scale);
-		w.inverseInertia = 1.0f / w.inertia;
+		Mass m = this.getComponent(Mass.class);
+		m.inertia = (2.0f / 5) * mass * (39.5f * scale) * (39.5f * scale);
+		m.inverseInertia = 1.0f / m.inertia;
 	}
 
 	/**
@@ -53,9 +53,9 @@ public class MoveableCollidableBall extends MoveableCollidableGameObject
 	 * @param weight The weight of the sphere.
 	 * @return A Sphere with the given parameters.
 	 */
-	public static MoveableCollidableBall create(Vector3f pos, Vector3f rot, float scale, float mass)
+	public static MovableCollidableBall create(Vector3f pos, Vector3f rot, float scale, float mass)
 	{
 		material.texturePath = texturePath;
-		return new MoveableCollidableBall(pos, rot, scale, mass);
+		return new MovableCollidableBall(pos, rot, scale, mass);
 	}
 }

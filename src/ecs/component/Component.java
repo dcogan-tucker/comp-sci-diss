@@ -1,8 +1,8 @@
 package ecs.component;
 
 /**
- * The base class for all components. Stores a hash map of every component class
- * type and all entities which have that component.
+ * The base class for all components. Empty class as only used as an
+ * identifier for components.
  * 
  * @author Dominic Cogan-Tucker
  *

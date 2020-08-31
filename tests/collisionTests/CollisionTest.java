@@ -9,7 +9,7 @@ import ecs.component.State;
 import ecs.entity.Camera;
 import ecs.entity.CollidableBox;
 import ecs.entity.CollidablePlane;
-import ecs.entity.MoveableCollidableBall;
+import ecs.entity.MovableCollidableBall;
 import io.output.DisplayManager;
 import io.output.Window;
 
@@ -32,7 +32,7 @@ public class CollisionTest extends Application
 		CollidableBox.create(new Vector3f(0.3f, -0.7f, -2.3f), new Vector3f(), 1, 1);
 		
 		CollidablePlane.create(new Vector3f(-3, -1, -2), new Vector3f(), new Vector2f(2));
-		MoveableCollidableBall.create(new Vector3f(-3, -1, -2), new Vector3f(), 0.02f, 1).removeComponent(Moveable.class);
+		MovableCollidableBall.create(new Vector3f(-3, -1, -2), new Vector3f(), 0.02f, 1).removeComponent(Moveable.class);
 		
 		CollidablePlane.create(new Vector3f(3, -1, -2), new Vector3f(), new Vector2f(2));
 		CollidableBox.create(new Vector3f(3, -0.5f, -2), new Vector3f(), 0.8f, 1);

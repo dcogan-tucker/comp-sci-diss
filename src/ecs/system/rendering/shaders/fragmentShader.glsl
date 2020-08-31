@@ -8,5 +8,6 @@ uniform sampler2D tex;
 
 void main()
 {
+	// Sets the colour for the fragment.
 	outColour = texture(tex, passTextureCoords);
 }

@@ -10,7 +10,14 @@ package ecs.system.physics.collision.broadphase;;
  */
 public class BoundingBox
 {
+	/**
+	 * The max x, y and z values of the bounding box.
+	 */
 	public float maxX, maxY, maxZ;
+	
+	/*
+	 * The min x, y and z values of the bounding box.
+	 */
 	public float minX, minY, minZ;
 
 	/**

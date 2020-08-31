@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 import ecs.component.Material;
 import ecs.component.Mesh;
 import ecs.component.State;
-import ecs.component.Weight;
+import ecs.component.Mass;
 
 /**
  * An an entity with a model component giving it a mesh and texture. Also has a
@@ -34,15 +34,18 @@ public class GameObject extends Entity
 		State state = new State();
 		state.position = pos;
 		state.rotation = rot;
+		state.scale = scale;
 		addComponent(state);
 		
-		Weight weight = new Weight();
-		weight.mass = mass;
-		weight.inverseMass = 1f / mass;
-		weight.scale = scale;
-		addComponent(weight);
+		Mass m = new Mass();
+		m.mass = mass;
+		m.inverseMass = 1f / mass;
+		addComponent(m);
 	}
 	
+	/**
+	 * A to string method that returns the simple class name and state of the game object.
+	 */
 	@Override
 	public String toString()
 	{

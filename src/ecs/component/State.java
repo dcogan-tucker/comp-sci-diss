@@ -4,8 +4,9 @@ import org.joml.Vector3f;
 
 /**
  * Component that stores the state of an entity consisting 
- * of the coordinate position of the entity and it's rotation 
- * in the scene.
+ * of the coordinate position of the entit, it's rotation and
+ * size in the scene. Also holds the previous state component of 
+ * the entity.
  * 
  * @author Dominic Cogan-Tucker
  *
@@ -21,6 +22,11 @@ public class State extends Component
 	 * The rotation of the entity.
 	 */
 	public Vector3f rotation = new Vector3f();
+	
+	/**
+	 * The scale of the entity.
+	 */
+	public Vector3f scale;
 	
 	/**
 	 * The value of the state component from the

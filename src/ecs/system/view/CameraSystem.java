@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 
-import ecs.component.Moveable;
+import ecs.component.Movable;
 import ecs.component.Controllable;
 import ecs.component.State;
 import ecs.component.View;
@@ -21,15 +21,34 @@ import io.input.*;
  */
 public final class CameraSystem extends EngineSystem
 {
+	/**
+	 * The mouse sensitivity.
+	 */
 	private float mouseSens = 0.1f;
+	
+	/**
+	 * The Mouse mouse position for this frame and the previous.
+	 */
 	private double oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;
+	
+	/**
+	 * The camera used in the system.
+	 */
 	private Camera camera;
 	
+	/**
+	 * Constructs a camera system, taking the camera to control as the input.
+	 * 
+	 * @param cam The camera for the system to control.
+	 */
 	public CameraSystem(Camera cam)
 	{
 		camera = cam;
 	}
 	
+	/**
+	 * Calls the cameras move method, to check if any movement is required each frame.
+	 */
 	@Override
 	public void update()
 	{
@@ -45,7 +64,7 @@ public final class CameraSystem extends EngineSystem
 	private void move()
 	{
 		State state = camera.getComponent(State.class);
-		Moveable mov = camera.getComponent(Moveable.class);
+		Movable mov = camera.getComponent(Movable.class);
 		Controllable control = camera.getComponent(Controllable.class);
 
 		float x = (float) Math.sin(Math.toRadians(-state.rotation.y));

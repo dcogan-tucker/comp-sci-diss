@@ -9,7 +9,6 @@ import org.joml.Vector4f;
 import ecs.component.Collidable;
 import ecs.component.Mesh;
 import ecs.component.State;
-import ecs.component.Weight;
 
 /**
  * 
@@ -64,7 +63,7 @@ public final class BroadPhaseDetector
 		{
 			vertices[i] = new Vector3f(values[3 * i], values[3 * i + 1], values[3 * i + 2]);
 			Vector4f v4 = new Vector4f(vertices[i], 1);
-			v4.mul(MatrixUtils.transformMatrix(state.position, state.rotation, entity.getComponent(Weight.class).scale));
+			v4.mul(MatrixUtils.transformMatrix(state.position, state.rotation, state.scale));
 			worldCoords[3 * i] = v4.x;
 			worldCoords[3 * i + 1] = v4.y;
 			worldCoords[3 * i + 2] = v4.z;

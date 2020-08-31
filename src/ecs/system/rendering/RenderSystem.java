@@ -6,11 +6,11 @@ import static org.lwjgl.opengl.GL30.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import ecs.component.Material;
 import ecs.component.Mesh;
 import ecs.component.State;
 import ecs.component.View;
-import ecs.component.Weight;
 import ecs.entity.Camera;
 import ecs.entity.Entity;
 import ecs.system.EngineSystem;
@@ -26,15 +26,42 @@ import utils.MatrixUtils;
  */
 public final class RenderSystem extends EngineSystem
 {
+	/**
+	 * The camera for the scene.
+	 */
+	
 	private Camera camera;
+	/**
+	 * The state of the camera.
+	 */
+	
 	private State cameraState;
+	/**
+	 * The entity shader program.
+	 */
 	private EntityShader shader;
 	
+	/**
+	 * The material system.
+	 */
 	private MaterialSystem materialSystem = new MaterialSystem();
+	
+	/**
+	 * The mesh system.
+	 */
 	private MeshSystem meshSystem = new MeshSystem();
 	
+	/**
+	 * The map of all entities to render.
+	 */
 	protected static Map<Mesh, Map<Material, List<Entity>>> entities = new HashMap<>();
 	
+	/**
+	 * Constructs a render system with the given camera view and shader program. 
+	 * 
+	 * @param cam The camera to view the scene from.
+	 * @param s The shader program to use.
+	 */
 	public RenderSystem(Camera cam, EntityShader s)
 	{
 		camera = cam;
@@ -42,6 +69,9 @@ public final class RenderSystem extends EngineSystem
 		shader = s;
 	}
 	
+	/**
+	 * Initialise the material and mesh system and bind the shader.
+	 */
 	@Override
 	public void initialise()
 	{
@@ -50,6 +80,9 @@ public final class RenderSystem extends EngineSystem
 		shader.bind();
 	}
 	
+	/**
+	 * Renders every mesh, to be called each frame.
+	 */
 	@Override
 	public void update()
 	{
@@ -60,7 +93,7 @@ public final class RenderSystem extends EngineSystem
 	 * Closes the rendering system, deleting all material and mesh
 	 * data.
 	 */
-
+	@Override
 	public void close()
 	{
 		materialSystem.close();
@@ -122,7 +155,7 @@ public final class RenderSystem extends EngineSystem
 	{
 		State entityState = entity.getComponent(State.class);
 		shader.setModelMatrix(MatrixUtils.transformMatrix(entityState.position, 
-				entityState.rotation, ((Weight) entity.getComponent(Weight.class)).scale));
+				entityState.rotation, entityState.scale));
 		shader.setViewMatrix(MatrixUtils.viewMatrix(cameraState.position, cameraState.rotation));
 		shader.setProjectionMatrix(((View) camera.getComponent(View.class)).window.getProjectionMatrix());
 		glDrawElements(GL_TRIANGLES, mesh.indices.length, GL_UNSIGNED_INT, 0);

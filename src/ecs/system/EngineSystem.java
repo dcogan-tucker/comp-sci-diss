@@ -24,21 +24,36 @@ public abstract class EngineSystem
 		return componentMap.get(component);
 	}
 	
+	/**
+	 * Updates the component map adding a new component and corresponding entity-component map.
+	 * 
+	 * @param componentType The type of component to be added.
+	 * @param ec The entity-component map for that component type.
+	 */
 	public static void updateComponentMap(Class<? extends Component> componentType, Map<Entity, Component> ec)
 	{
 		componentMap.put(componentType, ec);
 	}
 	
+	/**
+	 * Initialises the system.
+	 */
 	protected void initialise()
 	{
 		
 	}
 	
+	/**
+	 * Update the system, to be called each frame.
+	 */
 	protected void update()
 	{
 		
 	}
 	
+	/**
+	 * Closes the system.
+	 */
 	protected void close()
 	{
 		

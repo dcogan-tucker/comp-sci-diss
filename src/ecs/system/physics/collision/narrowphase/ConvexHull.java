@@ -7,28 +7,42 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import ecs.component.Mesh;
-import ecs.component.Moveable;
+import ecs.component.Movable;
 import ecs.component.State;
-import ecs.component.Weight;
 import ecs.entity.Entity;
-import ecs.entity.MoveableCollidableBall;
+import ecs.entity.MovableCollidableBall;
 import utils.MatrixUtils;
 
 /**
+ * Stores the mesh data for the entity in a form to be used in collision detection.
+ * The Convex Hull stores a list of vertices and the index ordering, where these
+ * vertices store adjacency data for the hull.
  * 
  * @author Dominic Cogan-Tucker
  *
  */
 public class ConvexHull 
 {
+	/**
+	 * The entity this hull belongs to.
+	 */
 	private Entity entity;
+	
+	/**
+	 * The hulls vertices.
+	 */
 	private List<Vertex> vertices = new ArrayList<>();
 	private List<Vertex> tempList = new ArrayList<>();
+	
+	/**
+	 * The index ordering of the vertices.
+	 */
 	private int[] indicies;
 	
 	/**
+	 * Constructs a convex hull for the given entity.
 	 * 
-	 * @param entity
+	 * @param entity The entity to generate a convex hull for.
 	 */
 	public ConvexHull(Entity entity)
 	{
@@ -39,18 +53,20 @@ public class ConvexHull
 	}
 	
 	/**
+	 * Generates a support point in the given direction for the hull.
 	 * 
-	 * @param direction
-	 * @return
+	 * @param direction The direction to generate the support point in.
+	 * 
+	 * @return The support point of the hull in the given direction.
 	 */
 	protected Vector3f generateSupportPoint(Vector3f direction)
 	{
 		State state = entity.getComponent(State.class);
 		Vector3f rot = new Vector3f();
-		if (!(entity instanceof MoveableCollidableBall))
+		if (!(entity instanceof MovableCollidableBall))
 		{
 			rot.set(state.rotation);
-			if (entity.hasComponent(Moveable.class))
+			if (entity.hasComponent(Movable.class))
 			{
 				if (rot.x > 0) rot.x = -rot.x;
 				if (rot.y > 0) rot.y = -rot.y;
@@ -90,12 +106,13 @@ public class ConvexHull
 	
 		Vector4f v4 = new Vector4f(start.toVector3f(), 1)
 				.mul(MatrixUtils.transformMatrix(state.position, 
-						rot, entity.getComponent(Weight.class).scale));
+						rot, state.scale));
 		return new Vector3f(v4.x, v4.y, v4.z);
 	}
 	
 	/**
-	 * 
+	 * Processes the vertices of the entity to create a list for the convex hull
+	 * to use.
 	 */
 	private void processVertices()
 	{
@@ -123,7 +140,7 @@ public class ConvexHull
 	}
 	
 	/**
-	 * 
+	 * Updates the index data for the vertices in the convex hull.
 	 */
 	private void updateIndexData()
 	{
@@ -156,7 +173,7 @@ public class ConvexHull
 	}
 	
 	/**
-	 * 
+	 * Sets the adjaceny data for all vetices in the convex hull.
 	 */
 	private void setAdjacencyData()
 	{
