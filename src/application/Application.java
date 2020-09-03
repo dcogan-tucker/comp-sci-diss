@@ -2,14 +2,14 @@ package application;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import ecs.entity.Camera;
-import ecs.system.physics.collision.CollisionSystem;
-import ecs.system.physics.dynamics.DynamicsSystem;
-import ecs.system.rendering.RenderSystem;
-import ecs.system.rendering.shaders.EntityShader;
-import ecs.system.view.CameraSystem;
-import io.input.Keyboard;
-import io.output.Window;
+import entity.Camera;
+import system.io.input.Keyboard;
+import system.io.output.CameraSystem;
+import system.io.output.Window;
+import system.physics.collision.CollisionSystem;
+import system.physics.dynamics.DynamicsSystem;
+import system.rendering.RenderSystem;
+import system.rendering.shader.EntityShader;
 
 /**
  * Application class to be extended by any program to use this engine. Provides abstract methods to

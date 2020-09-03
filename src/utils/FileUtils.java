@@ -10,7 +10,7 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import ecs.component.Mesh;
+import component.Mesh;
 
 /**
  * Class that contains file utility methods.
@@ -61,9 +61,9 @@ public final class FileUtils
 	 * @param path The path of the OBJ file.
 	 * @return A component array of length 2, with a mesh at index 0 and material at index 1.
 	 */
-	public static Mesh loadOBJFile(String path)
+	public static Mesh loadOBJFile(String name)
 	{
-		InputStream in = FileUtils.class.getResourceAsStream(path);
+		InputStream in = FileUtils.class.getResourceAsStream("/resources/objs/" + name);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line;
 		String[] currentLine;
