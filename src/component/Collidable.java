@@ -1,7 +1,7 @@
 package component;
 
-import system.physics.collision.detection.broadphase.BoundingBox;
-import system.physics.collision.detection.narrowphase.ConvexHull;
+import systems.physics.collision.detection.broadphase.BoundingBox;
+import systems.physics.collision.detection.narrowphase.ConvexHull;
 
 /**
  * Component that holds an entity's bounding box for collision detection,

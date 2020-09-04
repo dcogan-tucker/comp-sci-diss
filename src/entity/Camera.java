@@ -6,7 +6,7 @@ import component.Controllable;
 import component.Movable;
 import component.State;
 import component.View;
-import system.io.output.Window;
+import systems.io.output.Window;
 
 /**
  * An entity with the position, movable and view components attached. This

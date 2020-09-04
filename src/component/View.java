@@ -1,6 +1,6 @@
 package component;
 
-import system.io.output.Window;
+import systems.io.output.Window;
 
 /**
  * Component that stores the view of the entity. Used for the camera entity.

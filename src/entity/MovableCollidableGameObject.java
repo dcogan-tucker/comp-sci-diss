@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 import component.Material;
 import component.Mesh;
 import component.Movable;
-import system.physics.collision.response.ImpulseCalculator;
+import systems.physics.collision.response.ImpulseCalculator;
 
 /**
  * A CollidableGameObject with a moveable component that gives the entity a

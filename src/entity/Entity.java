@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import component.Component;
-import system.EngineSystem;
+import systems.EngineSystem;
 
 import java.util.UUID;
 

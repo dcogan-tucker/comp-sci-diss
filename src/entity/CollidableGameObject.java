@@ -6,8 +6,8 @@ import org.joml.Vector4f;
 import component.Collidable;
 import component.Material;
 import component.Mesh;
-import system.physics.collision.detection.broadphase.BoundingBox;
-import system.physics.collision.detection.narrowphase.ConvexHull;
+import systems.physics.collision.detection.broadphase.BoundingBox;
+import systems.physics.collision.detection.narrowphase.ConvexHull;
 import utils.MatrixUtils;
 
 /**

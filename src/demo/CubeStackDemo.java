@@ -8,8 +8,8 @@ import component.Collidable;
 import entity.Camera;
 import entity.CollidablePlane;
 import entity.MovableCollidableBox;
-import system.io.output.DisplayManager;
-import system.io.output.Window;
+import systems.io.output.DisplayManager;
+import systems.io.output.Window;
 
 public class CubeStackDemo extends Application
 {
