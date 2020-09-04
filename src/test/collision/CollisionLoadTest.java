@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 
 import application.Application;
 import component.Collidable;
+import component.Material;
 import component.State;
 import entity.Camera;
 import entity.CollidablePlane;
@@ -25,10 +26,10 @@ public class CollisionLoadTest extends Application
 	@Override
 	protected void initScene(Camera camera)
 	{
-		camera.getComponent(State.class).position.set(0, 10, 50);
+		camera.getComponent(State.class).position.set(0, 10, 10);
 		camera.getComponent(State.class).rotation.set(20, 0, 0);
 		
-		CollidablePlane.create(new Vector3f(0, -25, -25), new Vector3f(), new Vector2f(20, 20));
+		CollidablePlane.create(new Vector3f(0, -25, -25), new Vector3f(), new Vector2f(20, 20)).getComponent(Material.class).texturePath = "src/resources/textures/white.png";
 		
 		for (int i = -4; i < 5; i++)
 		{

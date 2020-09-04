@@ -297,7 +297,6 @@ public class CollisionTests
 	@Test
 	public void boxPlaneBoudningBoxTest3() 
 	{
-		System.out.println("here");
 		CollidableBox box = CollidableBox.create(new Vector3f(), new Vector3f(), 1, 1);
 		CollidablePlane plane = CollidablePlane.create(new Vector3f(0, 0.7f, 0), new Vector3f(0, 0, 30), new Vector2f(1, 1));
 		

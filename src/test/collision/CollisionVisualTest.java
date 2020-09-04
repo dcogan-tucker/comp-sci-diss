@@ -36,9 +36,6 @@ public class CollisionVisualTest extends Application
 		
 		CollidablePlane.create(new Vector3f(3, -1, -2), new Vector3f(), new Vector2f(2));
 		CollidableBox.create(new Vector3f(3, -0.5f, -2), new Vector3f(), 0.8f, 1);
-		
-		CollidableBox box = CollidableBox.create(new Vector3f(), new Vector3f(), 1, 1);
-		CollidablePlane plane = CollidablePlane.create(new Vector3f(0, 0.7f, 0), new Vector3f(0, 0, -45), new Vector2f(1, 1));
 	}
 	
 	@Override

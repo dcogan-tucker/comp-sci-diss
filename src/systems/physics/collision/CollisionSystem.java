@@ -165,7 +165,8 @@ public final class CollisionSystem extends EngineSystem
 	 */
 	public void collisionDebugPrint()
 	{
-		System.out.println(previous);
+		System.out.println("Current Collisions:");
+		previous.forEach(c -> System.out.println(c));
 	}
 	
 	/**

@@ -7,11 +7,11 @@ import application.Application;
 import component.Collidable;
 import entity.Camera;
 import entity.CollidablePlane;
-import entity.MovableCollidableBall;
+import entity.MovableCollidableBox;
 import systems.io.output.DisplayManager;
 import systems.io.output.Window;
 
-public class SphereSlopeDemo extends Application
+public class BoxSlopeDemo extends Application
 {
 
 	@Override
@@ -24,15 +24,16 @@ public class SphereSlopeDemo extends Application
 	@Override
 	protected void initScene(Camera camera)
 	{
-		CollidablePlane slope = CollidablePlane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -15), new Vector2f(5, 5));		
-		MovableCollidableBall sphere = MovableCollidableBall.create(
-				new Vector3f(-1.5f, 1f, -7.5f), 
+		CollidablePlane slope = CollidablePlane.create(new Vector3f(0, -2.5f, -7.5f), new Vector3f(0, 0, -20), new Vector2f(5, 5));
+		
+		MovableCollidableBox cube = MovableCollidableBox.create(
+				new Vector3f(-1f, 1f, -7.5f), 
 				new Vector3f(0, 0, 0), 
-				0.025f, 1);
-		slope.getComponent(Collidable.class).restitution = 0.65f;
-		sphere.getComponent(Collidable.class).restitution = 1.1f;
-		slope.getComponent(Collidable.class).friction = 0.3f;
-		sphere.getComponent(Collidable.class).friction = 0.3f;
+				0.8f, 1);
+		slope.getComponent(Collidable.class).restitution = 0.6f;
+		cube.getComponent(Collidable.class).restitution = 0.2f;
+		slope.getComponent(Collidable.class).friction = 0.5f;
+		cube.getComponent(Collidable.class).friction = 0.5f;
 	}
 	
 	@Override
@@ -43,6 +44,6 @@ public class SphereSlopeDemo extends Application
 	
 	public static void main(String[] args)
 	{
-		new SphereSlopeDemo().start();
+		new BoxSlopeDemo().start();
 	}
 }

@@ -7,13 +7,10 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import component.Mesh;
-import component.Movable;
 import component.State;
-import entity.CollidableBox;
 import entity.CollidablePlane;
 import entity.Entity;
 import entity.MovableCollidableBall;
-import entity.MovableCollidableBox;
 import utils.MatrixUtils;
 
 /**

@@ -12,7 +12,7 @@ import entity.MovableCollidableBox;
 import systems.io.output.DisplayManager;
 import systems.io.output.Window;
 
-public class Main extends Application
+public class MainDemo extends Application
 {
 	
 	@Override
@@ -32,7 +32,7 @@ public class Main extends Application
 				new Vector3f(1, 2, -6), 
 				new Vector3f(-20, 0, 0),
 				0.8f, 1);
-		cube.getComponent(Movable.class).momentum.set(0, 0, -5);
+		cube.getComponent(Movable.class).momentum.set(0, 0, -10);
 		MovableCollidableBall sphere = MovableCollidableBall.create(
 				new Vector3f(0, 2, -7.5f),
 				new Vector3f(0, 0, 0), 
@@ -49,7 +49,7 @@ public class Main extends Application
 		plane.getComponent(Collidable.class).restitution = 0.6f;
 		backWall.getComponent(Collidable.class).restitution = 0.6f;
 		sideWall.getComponent(Collidable.class).restitution = 0.6f;
-		cube.getComponent(Collidable.class).restitution = 0.3f;
+		cube.getComponent(Collidable.class).restitution = 0.1f;
 		cube2.getComponent(Collidable.class).restitution = 0.3f;
 		sphere.getComponent(Collidable.class).restitution = 1f;
 		sphere2.getComponent(Collidable.class).restitution = 0.9f;
@@ -63,6 +63,6 @@ public class Main extends Application
 
 	public static void main(String[] args)
 	{
-		new Main().start();
+		new MainDemo().start();
 	}
 }

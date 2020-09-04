@@ -169,6 +169,7 @@ public class ImpulseCalculator
 		{
 			contact.worldNormal.set(dirOfMotion).negate();
 		}
+		
 		Vector3f relativeVelocity = new Vector3f(mov.velocity).mul(restitution + 1).negate();
 		float normalVelocity = relativeVelocity.dot(contact.worldNormal);
 		float impulseMagnitude = normalVelocity / inverseMassTotal;
@@ -178,7 +179,13 @@ public class ImpulseCalculator
 		{
 			resultant.set(0);
 		}
-		if(resultant.dot(dirOfMotion) > 0)
+		else if (resultant.length() <= 0.001f)
+		{
+			mov.momentum.set(0);
+			mov.velocity.set(0);
+			resultant.set(0);
+		}
+		else if(resultant.dot(dirOfMotion) > 0)
 		{
 			resultant.negate();
 		}

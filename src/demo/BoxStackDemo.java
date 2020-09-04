@@ -11,7 +11,7 @@ import entity.MovableCollidableBox;
 import systems.io.output.DisplayManager;
 import systems.io.output.Window;
 
-public class CubeStackDemo extends Application
+public class BoxStackDemo extends Application
 {
 
 	@Override
@@ -58,6 +58,6 @@ public class CubeStackDemo extends Application
 
 	public static void main(String[] args)
 	{
-		new CubeStackDemo().start();
+		new BoxStackDemo().start();
 	}
 }
