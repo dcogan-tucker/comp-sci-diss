@@ -45,7 +45,7 @@ public class Entity
 	 * @param <T> The type of class, which extends component.
 	 * @param component The component to add.
 	 */
-	public <T extends Component> void addComponent(T component)
+	public <T extends Component> Entity addComponent(T component)
 	{
 		if (components.get(component.getClass()) == null)
 		{
@@ -62,6 +62,7 @@ public class Entity
 		{
 			EngineSystem.getEntities(component.getClass()).put(this, component);
 		}
+		return this;
 	}
 
 	/**
@@ -69,10 +70,11 @@ public class Entity
 	 * 
 	 * @param component The class of the component to remove.
 	 */
-	public void removeComponent(Class<? extends Component> component)
+	public Entity removeComponent(Class<? extends Component> component)
 	{
 		components.remove(component);
 		EngineSystem.getEntities(component).remove(this);
+		return this;
 	}
 
 	/**
@@ -110,15 +112,13 @@ public class Entity
 	 * Removes all components from this entity.
 	 * 
 	 */
-	public void removeAllComponents()
+	public Entity removeAllComponents()
 	{
 		if (components != null)
 		{
-			for (Iterator<Entry<Class<? extends Component>, Component>> iter = components.entrySet().iterator(); iter.hasNext();)
-			{
-				iter.remove();
-			}
+			components.clear();
 		}	
+		return this;
 	}
 	
 	/**
